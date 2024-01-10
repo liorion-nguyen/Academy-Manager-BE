@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "src/main.js", // Update the source directory here
+      "src": "src/main.ts", // Update the source directory here
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "src/main.js" // Update the destination directory here
+      "dest": "src/main.ts" // Update the destination directory here
     }
   ]
 }
