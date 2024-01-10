@@ -9,7 +9,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "src/main.ts" // Update the destination directory here
+      "dest": "src/main.js" // Update the destination directory here
     }
   ]
 }
