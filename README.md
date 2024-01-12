@@ -25,6 +25,11 @@
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Using node_modules
+```bash
+node 18
+```
+
 
 ## Installation
 
@@ -44,6 +49,7 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
+Open [http://localhost:8000](http://localhost:8000) with your browser to see the result.
 
 ## Test
 
@@ -71,5 +77,14 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
-# project-nest-v1
-# project-nest-v1
+
+# For work 
+```bash
+git checkout main -> chuyển về nhánh main
+git pull origin main -> kéo những thay đổi mới nhất về
+git checkout -b (Tên nhánh)  -> Tạo nhánh mới
+{handle works} -> Xử lí công việc 
+git add . -> Thêm tất cả các file đã thay đổi để đẩy lên nhánh
+git commit -m "(content)" -> Ghi chú mình đã xử lí cái gì
+git push origin (Tên nhánh) -> đẩy lên nhánh
+```
