@@ -26,12 +26,15 @@ let UserController = class UserController {
     async findById(id) {
         return this.userService.findById(parseInt(id));
     }
-    async update(user) {
+    async create(user) {
+        if (user.id) {
+            throw new common_1.BadRequestException("No user ID is required!");
+        }
         return this.userService.createUser(user);
     }
-    async create(user) {
+    async update(user) {
         if (!user.id) {
-            throw new common_1.BadRequestException('ID is required for user update.');
+            throw new common_1.BadRequestException('ID is required for user update!');
         }
         return this.userService.updateUser(user);
     }
@@ -58,18 +61,18 @@ __decorate([
 ], UserController.prototype, "findById", null);
 __decorate([
     (0, common_1.Post)(),
-    __param(0, (0, common_1.Body)()),
+    __param(0, (0, common_1.Body)(new common_1.ValidationPipe())),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_entity_1.User]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "update", null);
+], UserController.prototype, "create", null);
 __decorate([
     (0, common_1.Post)("/update"),
     __param(0, (0, common_1.Body)(new common_1.ValidationPipe())),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_entity_1.User]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "create", null);
+], UserController.prototype, "update", null);
 __decorate([
     (0, common_1.Post)("/delete"),
     __param(0, (0, common_1.Body)("id")),

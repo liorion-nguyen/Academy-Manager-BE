@@ -22,20 +22,20 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.Length)(1, 100),
+    (0, class_validator_1.Length)(10, 100),
     __metadata("design:type", String)
 ], User.prototype, "fullName", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsEmail)(),
-    (0, class_validator_1.Length)(1, 100),
+    (0, class_validator_1.Length)(5, 100),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.Length)(1, 11),
+    (0, class_validator_1.Length)(10, 11),
     __metadata("design:type", Number)
 ], User.prototype, "phone", void 0);
 __decorate([
