@@ -8,7 +8,6 @@ export class User {
 
     @Column()
     @IsNotEmpty()
-    @IsString()
     @Length(1, 100)
     fullName: string;
 
@@ -20,37 +19,28 @@ export class User {
 
     @Column()
     @IsNotEmpty()
-    @IsString()
     @Length(1, 11)
     phone: number;
 
     @Column()
     @IsNotEmpty()
-    @IsString()
     @Length(6, 100)
     username: string;
 
     @Column()
     @IsNotEmpty()
-    @IsString()
     @Length(6, 50)
     password: string;
 
     @Column({ default: false })
-    @IsBoolean()
     isLoggedIn: boolean;
 
     @Column({ nullable: true })
-    @IsDate()
     lastLoginAt: Date;
 
     @Column({ nullable: true })
-    @IsString()
-    @Length(1, 255)
     accessToken: string;
 
     @Column({ nullable: true })
-    @IsString()
-    @Length(1, 255)
     refreshToken: string;
 }
