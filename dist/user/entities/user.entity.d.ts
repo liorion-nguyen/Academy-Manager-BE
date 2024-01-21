@@ -5,5 +5,8 @@ export declare class User {
     phone: number;
     username: string;
     password: string;
-    birthday: Date;
+    isLoggedIn: boolean;
+    lastLoginAt: Date;
+    accessToken: string;
+    refreshToken: string;
 }

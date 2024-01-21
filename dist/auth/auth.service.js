@@ -8,42 +8,67 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
-const typeorm_1 = require("@nestjs/typeorm");
-const typeorm_2 = require("typeorm");
-const user_entity_1 = require("./entities/user.entity");
 const jwt_1 = require("@nestjs/jwt");
-const bcrypt = require("bcrypt");
+const user_service_1 = require("../user/user.service");
 let AuthService = class AuthService {
-    constructor(userRepository, jwtService) {
-        this.userRepository = userRepository;
+    constructor(userService, jwtService) {
+        this.userService = userService;
         this.jwtService = jwtService;
     }
     async validateUser(username, password) {
-        const user = await this.userRepository.findOne({ where: { username } });
-        if (user && await bcrypt.compare(password, user.password)) {
+        const user = await this.userService.findByUsername(username);
+        if (user && user.password === password) {
             const { password, ...result } = user;
             return result;
         }
-        throw new common_1.UnauthorizedException('Invalid credentials');
+        return null;
     }
     async login(user) {
-        const payload = { username: user.username, sub: user.userId };
+        const payload = { sub: user.id, username: user.username };
+        const accessToken = this.jwtService.sign(payload);
+        const refreshToken = this.generateRefreshToken();
+        this.saveTokensToDatabase(user.id, accessToken, refreshToken);
         return {
-            access_token: this.jwtService.sign(payload),
+            access_token: accessToken,
+            refresh_token: refreshToken,
+        };
+    }
+    generateRefreshToken() {
+        const tokenLength = 32;
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let refreshToken = '';
+        for (let i = 0; i < tokenLength; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            refreshToken += characters[randomIndex];
+        }
+        return refreshToken;
+    }
+    saveTokensToDatabase(userId, accessToken, refreshToken) {
+        this.userService.saveTokens(userId, accessToken, refreshToken);
+    }
+    async refreshTokens(refreshToken) {
+        const payload = this.jwtService.verify(refreshToken);
+        const user = await this.userService.findByUsername(payload.username);
+        if (!user || user.refreshToken !== refreshToken) {
+            throw new common_1.UnauthorizedException();
+        }
+        const newAccessToken = this.jwtService.sign({
+            sub: user.id,
+            username: user.username,
+        });
+        return {
+            access_token: newAccessToken,
+            refresh_token: refreshToken,
         };
     }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
-    __metadata("design:paramtypes", [typeorm_2.Repository,
+    __metadata("design:paramtypes", [user_service_1.UserService,
         jwt_1.JwtService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

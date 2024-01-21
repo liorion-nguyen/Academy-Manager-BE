@@ -4,8 +4,10 @@ export declare class UserService {
     private readonly userRepository;
     constructor(userRepository: Repository<User>);
     findAll(): Promise<User[]>;
-    findById(id: number): Promise<User>;
+    findById(id: number): Promise<User | undefined>;
+    findByUsername(username: string): Promise<User | undefined>;
     createUser(user: User): Promise<User>;
     updateUser(user: User): Promise<User>;
     deleteUser(id: number): Promise<User>;
+    saveTokens(id: number, accessToken: string, refreshToken: string): Promise<User>;
 }

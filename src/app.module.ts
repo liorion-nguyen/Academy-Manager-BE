@@ -4,7 +4,9 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
+import { AuthModule } from './auth/auth.module';
 import * as dotenv from 'dotenv';
+import { JwtModule } from '@nestjs/jwt';
 
 dotenv.config();
 
@@ -12,14 +14,21 @@ dotenv.config();
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      url: process.env.DATABASE_URL, 
+      url: process.env.DATABASE_URL,
       synchronize: true,
       entities: [User],
     }),
-    UserModule
+    UserModule,
+    AuthModule,
+    JwtModule.register({
+      secret: 'duy',
+      signOptions: { expiresIn: '60s' },
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 
-export class AppModule {}
+export class AppModule {
+
+}
