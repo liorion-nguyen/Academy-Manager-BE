@@ -32,6 +32,10 @@ let UserService = class UserService {
         return this.userRepository.findOne({ where: { username } });
     }
     async createUser(user) {
+        let existingUser = await this.userRepository.findOne({ where: { username: user.username } });
+        if (existingUser) {
+            throw new common_1.BadRequestException('Account already exists');
+        }
         const hash = await bcrypt.hash(user.password, 10);
         user.password = hash;
         return this.userRepository.save(user);

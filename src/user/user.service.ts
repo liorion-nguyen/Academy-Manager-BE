@@ -24,6 +24,11 @@ export class UserService {
   }
 
   async createUser(user: User): Promise<User> {
+    let existingUser = await this.userRepository.findOne({ where: { username: user.username } });
+
+    if (existingUser) {
+      throw new BadRequestException('Account already exists');
+    }
     const hash: any = await bcrypt.hash(user.password, 10);
     user.password = hash;
     return this.userRepository.save(user);

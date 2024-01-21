@@ -8,18 +8,18 @@ export class User {
 
     @Column()
     @IsNotEmpty()
-    @Length(1, 100)
+    @Length(10, 100)
     fullName: string;
 
     @Column()
     @IsNotEmpty()
     @IsEmail()
-    @Length(1, 100)
+    @Length(5, 100)
     email: string;
 
     @Column()
     @IsNotEmpty()
-    @Length(1, 11)
+    @Length(10, 11)
     phone: number;
 
     @Column()

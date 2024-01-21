@@ -5,7 +5,7 @@ import { User } from './entities/user.entity';
 
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Get()
   async findAll(): Promise<User[]> {
@@ -17,13 +17,16 @@ export class UserController {
   }
 
   @Post()
-  async update(@Body() user: User): Promise<User> {
+  async create(@Body(new ValidationPipe()) user: User): Promise<User> {
+    if (user.id) {
+      throw new BadRequestException("No user ID is required!");
+    }
     return this.userService.createUser(user);
   }
   @Post("/update")
-  async create(@Body(new ValidationPipe()) user: User): Promise<User> {
+  async update(@Body(new ValidationPipe()) user: User): Promise<User> {
     if (!user.id) {
-      throw new BadRequestException('ID is required for user update.');
+      throw new BadRequestException('ID is required for user update!');
     }
     return this.userService.updateUser(user);
   }
