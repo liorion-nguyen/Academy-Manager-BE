@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const user_entity_1 = require("./entities/user.entity");
+const bcrypt = require("bcrypt");
 let UserService = class UserService {
     constructor(userRepository) {
         this.userRepository = userRepository;
@@ -25,49 +26,50 @@ let UserService = class UserService {
         return this.userRepository.find();
     }
     async findById(id) {
-        return this.userRepository.findOne({
-            where: {
-                id: id,
-            }
-        });
+        return this.userRepository.findOne({ where: { id } });
+    }
+    async findByUsername(username) {
+        return this.userRepository.findOne({ where: { username } });
     }
     async createUser(user) {
+        const hash = await bcrypt.hash(user.password, 10);
+        user.password = hash;
         return this.userRepository.save(user);
     }
     async updateUser(user) {
+        let existingUser = await this.findById(user.id);
+        if (!existingUser) {
+            throw new common_1.NotFoundException('User not found');
+        }
         try {
-            await this.userRepository.update(user.id, {
-                fullName: user.fullName,
-                email: user.email,
-                phone: user.phone,
-                password: user.password,
-            });
-            const updatedUser = await this.userRepository.findOne({
-                where: {
-                    id: user.id,
-                }
-            });
-            if (!updatedUser) {
-                throw new Error('User not found after update');
-            }
-            return updatedUser;
+            const hash = await bcrypt.hash(user.password, 10);
+            user.password = hash;
+            await this.userRepository.save(user);
+            return this.findById(user.id);
         }
         catch (error) {
-            throw new Error(error);
+            throw new common_1.BadRequestException('Failed to update user');
         }
     }
     async deleteUser(id) {
+        const existingUser = await this.userRepository.findOne({ where: { id } });
+        if (!existingUser) {
+            throw new common_1.NotFoundException('User not found');
+        }
         try {
-            const updatedUser = await this.userRepository.findOne({
-                where: {
-                    id: id,
-                }
-            });
-            await this.userRepository.delete({ id: id });
-            return updatedUser;
+            await this.userRepository.remove(existingUser);
+            return existingUser;
         }
         catch (error) {
-            throw new Error(error);
+            throw new common_1.BadRequestException('Failed to delete user');
+        }
+    }
+    async saveTokens(id, accessToken, refreshToken) {
+        const user = await this.userRepository.findOne({ where: { id } });
+        if (user) {
+            user.accessToken = accessToken;
+            user.refreshToken = refreshToken;
+            return this.userRepository.save(user);
         }
     }
 };
