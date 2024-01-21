@@ -45,7 +45,7 @@ let UserService = class UserService {
             const hash = await bcrypt.hash(user.password, 10);
             user.password = hash;
             await this.userRepository.save(user);
-            return this.findById(user.id);
+            return this.userRepository.findOne({ where: { id: user.id } });
         }
         catch (error) {
             throw new common_1.BadRequestException('Failed to update user');

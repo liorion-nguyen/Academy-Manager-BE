@@ -22,7 +22,6 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
     (0, class_validator_1.Length)(1, 100),
     __metadata("design:type", String)
 ], User.prototype, "fullName", void 0);
@@ -36,44 +35,35 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
     (0, class_validator_1.Length)(1, 11),
     __metadata("design:type", Number)
 ], User.prototype, "phone", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
     (0, class_validator_1.Length)(6, 100),
     __metadata("design:type", String)
 ], User.prototype, "username", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
     (0, class_validator_1.Length)(6, 50),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: false }),
-    (0, class_validator_1.IsBoolean)(),
     __metadata("design:type", Boolean)
 ], User.prototype, "isLoggedIn", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
-    (0, class_validator_1.IsDate)(),
     __metadata("design:type", Date)
 ], User.prototype, "lastLoginAt", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.Length)(1, 255),
     __metadata("design:type", String)
 ], User.prototype, "accessToken", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.Length)(1, 255),
     __metadata("design:type", String)
 ], User.prototype, "refreshToken", void 0);
 exports.User = User = __decorate([
