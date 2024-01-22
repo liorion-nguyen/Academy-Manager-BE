@@ -21,7 +21,7 @@ let AuthController = class AuthController {
         this.authService = authService;
     }
     async login(req) {
-        return this.authService.login(req.user);
+        return this.authService.login(req.body);
     }
     async refreshTokens(req) {
         const { refresh_token } = req.body;

@@ -3,7 +3,7 @@ declare const LocalStrategy_base: new (...args: any[]) => any;
 export declare class LocalStrategy extends LocalStrategy_base {
     private readonly authService;
     constructor(authService: AuthService);
-    validate(username: string, password: string): Promise<any>;
-    login(username: string, password: string): Promise<any>;
+    validate(email: string, password: string): Promise<any>;
+    login(email: string, password: string): Promise<any>;
 }
 export {};
