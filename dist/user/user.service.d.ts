@@ -5,7 +5,7 @@ export declare class UserService {
     constructor(userRepository: Repository<User>);
     findAll(): Promise<User[]>;
     findById(id: number): Promise<User | undefined>;
-    findByUsername(username: string): Promise<User | undefined>;
+    findByemail(email: string): Promise<User | undefined>;
     createUser(user: User): Promise<User>;
     updateUser(user: User): Promise<User>;
     deleteUser(id: number): Promise<User>;

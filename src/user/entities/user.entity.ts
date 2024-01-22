@@ -14,18 +14,13 @@ export class User {
     @Column()
     @IsNotEmpty()
     @IsEmail()
-    @Length(5, 100)
+    @Length(6, 100)
     email: string;
 
     @Column()
     @IsNotEmpty()
     @Length(10, 11)
-    phone: number;
-
-    @Column()
-    @IsNotEmpty()
-    @Length(6, 100)
-    username: string;
+    phone: string;
 
     @Column()
     @IsNotEmpty()

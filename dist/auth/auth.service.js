@@ -13,21 +13,22 @@ exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const user_service_1 = require("../user/user.service");
+const bcrypt = require("bcrypt");
 let AuthService = class AuthService {
     constructor(userService, jwtService) {
         this.userService = userService;
         this.jwtService = jwtService;
     }
-    async validateUser(username, password) {
-        const user = await this.userService.findByUsername(username);
-        if (user && user.password === password) {
+    async validateUser(email, password) {
+        const user = await this.userService.findByemail(email);
+        if (user && await bcrypt.compare(password, user.password)) {
             const { password, ...result } = user;
             return result;
         }
         return null;
     }
     async login(user) {
-        const payload = { sub: user.id, username: user.username };
+        const payload = { sub: user.id, email: user.email };
         const accessToken = this.jwtService.sign(payload);
         const refreshToken = this.generateRefreshToken();
         this.saveTokensToDatabase(user.id, accessToken, refreshToken);
@@ -51,13 +52,13 @@ let AuthService = class AuthService {
     }
     async refreshTokens(refreshToken) {
         const payload = this.jwtService.verify(refreshToken);
-        const user = await this.userService.findByUsername(payload.username);
+        const user = await this.userService.findByemail(payload.email);
         if (!user || user.refreshToken !== refreshToken) {
             throw new common_1.UnauthorizedException();
         }
         const newAccessToken = this.jwtService.sign({
             sub: user.id,
-            username: user.username,
+            email: user.email,
         });
         return {
             access_token: newAccessToken,

@@ -19,12 +19,12 @@ export class UserService {
     return this.userRepository.findOne({ where: { id } });
   }
 
-  async findByUsername(username: string): Promise<User | undefined> {
-    return this.userRepository.findOne({ where: { username } });
+  async findByemail(email: string): Promise<User | undefined> {
+    return this.userRepository.findOne({ where: { email } });
   }
 
   async createUser(user: User): Promise<User> {
-    let existingUser = await this.userRepository.findOne({ where: { username: user.username } });
+    let existingUser = await this.userRepository.findOne({ where: { email: user.email } });
 
     if (existingUser) {
       throw new BadRequestException('Account already exists');

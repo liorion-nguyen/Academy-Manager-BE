@@ -1,8 +1,8 @@
-// auth.service.ts
 
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -11,9 +11,9 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) { }
 
-    async validateUser(username: string, password: string): Promise<any> {
-        const user = await this.userService.findByUsername(username);
-        if (user && user.password === password) {
+    async validateUser(email: string, password: string): Promise<any> {
+        const user = await this.userService.findByemail(email);
+        if (user && await bcrypt.compare(password, user.password)) {
             const { password, ...result } = user;
             return result;
         }
@@ -21,10 +21,10 @@ export class AuthService {
     }
 
     async login(user: any) {
-        const payload = { sub: user.id, username: user.username };
+        const payload = { sub: user.id, email: user.email };
         const accessToken = this.jwtService.sign(payload);
         const refreshToken = this.generateRefreshToken();
-        this.saveTokensToDatabase(user.id, accessToken, refreshToken); // Lưu refresh token vào cơ sở dữ liệu
+        this.saveTokensToDatabase(user.id, accessToken, refreshToken); 
         return {
             access_token: accessToken,
             refresh_token: refreshToken,
@@ -32,7 +32,6 @@ export class AuthService {
     }
 
     private generateRefreshToken(): string {
-        // Sử dụng một thư viện để tạo refresh token ngẫu nhiên và duy nhất
         const tokenLength = 32;
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         let refreshToken = '';
@@ -50,13 +49,13 @@ export class AuthService {
 
     async refreshTokens(refreshToken: string) {
         const payload = this.jwtService.verify(refreshToken);
-        const user = await this.userService.findByUsername(payload.username);
+        const user = await this.userService.findByemail(payload.email);
         if (!user || user.refreshToken !== refreshToken) {
             throw new UnauthorizedException();
         }
         const newAccessToken = this.jwtService.sign({
             sub: user.id,
-            username: user.username,
+            email: user.email,
         });
         return {
             access_token: newAccessToken,

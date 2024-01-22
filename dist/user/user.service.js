@@ -28,11 +28,11 @@ let UserService = class UserService {
     async findById(id) {
         return this.userRepository.findOne({ where: { id } });
     }
-    async findByUsername(username) {
-        return this.userRepository.findOne({ where: { username } });
+    async findByemail(email) {
+        return this.userRepository.findOne({ where: { email } });
     }
     async createUser(user) {
-        let existingUser = await this.userRepository.findOne({ where: { username: user.username } });
+        let existingUser = await this.userRepository.findOne({ where: { email: user.email } });
         if (existingUser) {
             throw new common_1.BadRequestException('Account already exists');
         }
