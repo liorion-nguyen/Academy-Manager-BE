@@ -24,7 +24,7 @@ export class AuthService {
         const payload = { sub: user.id, email: user.email };
         const accessToken = this.jwtService.sign(payload);
         const refreshToken = this.generateRefreshToken();
-        this.saveTokensToDatabase(user.id, accessToken, refreshToken); 
+        this.saveTokensToDatabase(user.id, accessToken, refreshToken);
         return {
             access_token: accessToken,
             refresh_token: refreshToken,
@@ -42,7 +42,7 @@ export class AuthService {
         return refreshToken;
     }
 
-    private saveTokensToDatabase(userId: number, accessToken: string, refreshToken: string) {
+    private saveTokensToDatabase(userId: string, accessToken: string, refreshToken: string) {
         // Lưu access token và refresh token vào cơ sở dữ liệu
         this.userService.saveTokens(userId, accessToken, refreshToken);
     }

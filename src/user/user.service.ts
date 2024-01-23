@@ -15,7 +15,7 @@ export class UserService {
     return this.userRepository.find();
   }
 
-  async findById(id: number): Promise<User | undefined> {
+  async findById(id: string): Promise<User | undefined> {
     return this.userRepository.findOne({ where: { id } });
   }
 
@@ -51,7 +51,7 @@ export class UserService {
     }
   }
 
-  async deleteUser(id: number): Promise<User> {
+  async deleteUser(id: string): Promise<User> {
     const existingUser = await this.userRepository.findOne({ where: { id } });
 
     if (!existingUser) {
@@ -65,7 +65,7 @@ export class UserService {
       throw new BadRequestException('Failed to delete user');
     }
   }
-  async saveTokens(id: number, accessToken: string, refreshToken: string) {
+  async saveTokens(id: string, accessToken: string, refreshToken: string) {
     const user = await this.userRepository.findOne({ where: { id } });
     if (user) {
       user.accessToken = accessToken;

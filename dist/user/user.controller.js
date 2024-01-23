@@ -24,7 +24,7 @@ let UserController = class UserController {
         return this.userService.findAll();
     }
     async findById(id) {
-        return this.userService.findById(parseInt(id));
+        return this.userService.findById(id);
     }
     async create(user) {
         if (user.id) {
@@ -77,7 +77,7 @@ __decorate([
     (0, common_1.Post)("/delete"),
     __param(0, (0, common_1.Body)("id")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "delete", null);
 exports.UserController = UserController = __decorate([
