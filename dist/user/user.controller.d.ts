@@ -7,5 +7,5 @@ export declare class UserController {
     findById(id: string): Promise<User>;
     create(user: User): Promise<User>;
     update(user: User): Promise<User>;
-    delete(id: number): Promise<User>;
+    delete(id: string): Promise<User>;
 }

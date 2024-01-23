@@ -13,7 +13,7 @@ export class UserController {
   }
   @Get(':id')
   async findById(@Param('id') id: string): Promise<User> {
-    return this.userService.findById(parseInt(id));
+    return this.userService.findById(id);
   }
 
   @Post()
@@ -32,7 +32,7 @@ export class UserController {
   }
 
   @Post("/delete")
-  async delete(@Body("id") id: number): Promise<User> {
+  async delete(@Body("id") id: string): Promise<User> {
     if (!id) {
       throw new BadRequestException('ID is required for user delete.');
     }

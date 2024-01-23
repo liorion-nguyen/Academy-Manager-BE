@@ -17,6 +17,7 @@ dotenv.config();
       url: process.env.DATABASE_URL,
       synchronize: true,
       entities: [User],
+
     }),
     UserModule,
     AuthModule,
