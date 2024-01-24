@@ -1,7 +1,8 @@
 // user.controller.ts
-import { Controller, Get, Post, Body, Param, BadRequestException, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, BadRequestException, ValidationPipe, Put, Delete } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './entities/user.entity';
+import { Role } from './enum/user.enum';
 
 @Controller('users')
 export class UserController {
@@ -23,19 +24,18 @@ export class UserController {
     }
     return this.userService.createUser(user);
   }
-  @Post("/update")
-  async update(@Body(new ValidationPipe()) user: User): Promise<User> {
-    if (!user.id) {
-      throw new BadRequestException('ID is required for user update!');
-    }
-    return this.userService.updateUser(user);
+
+  @Get('/roles/:role')
+  async findByRole(@Param('role') role: Role): Promise<User[]> {
+    return this.userService.findRole(role);
+  }
+  @Put(":id")
+  async update(@Param('id') userId: string, @Body() updateUserDto: Partial<User>): Promise<User> {
+    return this.userService.updateUser(userId, updateUserDto);
   }
 
-  @Post("/delete")
-  async delete(@Body("id") id: string): Promise<User> {
-    if (!id) {
-      throw new BadRequestException('ID is required for user delete.');
-    }
+  @Delete(":id")
+  async delete(@Param("id") id: string): Promise<User> {
     return this.userService.deleteUser(id);
   }
 

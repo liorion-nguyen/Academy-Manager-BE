@@ -18,6 +18,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const user_entity_1 = require("./entities/user.entity");
 const bcrypt = require("bcrypt");
+const class_validator_1 = require("class-validator");
 let UserService = class UserService {
     constructor(userRepository) {
         this.userRepository = userRepository;
@@ -25,8 +26,16 @@ let UserService = class UserService {
     async findAll() {
         return this.userRepository.find();
     }
+    async findRole(role) {
+        return this.userRepository.find({ where: { role } });
+    }
     async findById(id) {
-        return this.userRepository.findOne({ where: { id } });
+        try {
+            return this.userRepository.findOne({ where: { id } });
+        }
+        catch (error) {
+            throw new common_1.BadRequestException(`User with id ${id} not found`);
+        }
     }
     async findByemail(email) {
         return this.userRepository.findOne({ where: { email } });
@@ -40,20 +49,29 @@ let UserService = class UserService {
         user.password = hash;
         return this.userRepository.save(user);
     }
-    async updateUser(user) {
-        let existingUser = await this.findById(user.id);
-        if (!existingUser) {
+    async updateUser(userId, updateUserDto) {
+        let user = await this.findById(userId);
+        if (!user) {
             throw new common_1.NotFoundException('User not found');
         }
-        try {
-            const hash = await bcrypt.hash(user.password, 10);
-            user.password = hash;
-            await this.userRepository.save(user);
-            return this.userRepository.findOne({ where: { id: user.id } });
+        const updatedUser = this.userRepository.create({
+            ...user,
+            ...updateUserDto,
+            updatedAt: new Date(),
+        });
+        const errors = await (0, class_validator_1.validate)(updatedUser);
+        if (errors.length > 0) {
+            const errorArray = errors.map(error => ({
+                property: error.property,
+                constraints: error.constraints,
+            }));
+            throw new common_1.BadRequestException({ message: errorArray });
         }
-        catch (error) {
-            throw new common_1.BadRequestException('Failed to update user');
+        if (updatedUser.password) {
+            const hash = await bcrypt.hash(updatedUser.password, 10);
+            updatedUser.password = hash;
         }
+        return await this.userRepository.save(updatedUser);
     }
     async deleteUser(id) {
         const existingUser = await this.userRepository.findOne({ where: { id } });

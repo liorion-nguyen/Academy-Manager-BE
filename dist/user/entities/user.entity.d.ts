@@ -7,6 +7,10 @@ export declare class User {
     role: Role;
     gender: Gender;
     password: string;
+    address: string;
+    createdAt: Date;
+    updatedAt: Date;
+    isActive: boolean;
     isLoggedIn: boolean;
     lastLoginAt: Date;
     accessToken: string;

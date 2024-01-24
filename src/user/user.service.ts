@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
+import { Role } from './enum/user.enum';
+import { validate } from 'class-validator';
 
 @Injectable()
 export class UserService {
@@ -14,9 +16,17 @@ export class UserService {
   async findAll(): Promise<User[]> {
     return this.userRepository.find();
   }
+  async findRole(role: Role): Promise<User[]> {
+    return this.userRepository.find({ where: { role } });
+  }
 
   async findById(id: string): Promise<User | undefined> {
-    return this.userRepository.findOne({ where: { id } });
+    try {
+      return this.userRepository.findOne({ where: { id } });
+    } catch (error) {
+      throw new BadRequestException(`User with id ${id} not found`);
+
+    }
   }
 
   async findByemail(email: string): Promise<User | undefined> {
@@ -34,21 +44,30 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  async updateUser(user: User): Promise<User> {
-    let existingUser = await this.findById(user.id);
-
-    if (!existingUser) {
+  async updateUser(userId: string, updateUserDto: Partial<User>): Promise<User> {
+    let user = await this.findById(userId);
+    if (!user) {
       throw new NotFoundException('User not found');
     }
 
-    try {
-      const hash: any = await bcrypt.hash(user.password, 10);
-      user.password = hash;
-      await this.userRepository.save(user);
-      return this.userRepository.findOne({ where: { id: user.id } });
-    } catch (error) {
-      throw new BadRequestException('Failed to update user');
+    const updatedUser = this.userRepository.create({
+      ...user,
+      ...updateUserDto,
+      updatedAt: new Date(),
+    }); const errors = await validate(updatedUser);
+
+    if (errors.length > 0) {
+      const errorArray = errors.map(error => ({
+        property: error.property,
+        constraints: error.constraints,
+      }));
+      throw new BadRequestException({ message: errorArray });
     }
+    if (updatedUser.password) {
+      const hash: any = await bcrypt.hash(updatedUser.password, 10);
+      updatedUser.password = hash;
+    }
+    return await this.userRepository.save(updatedUser);
   }
 
   async deleteUser(id: string): Promise<User> {
