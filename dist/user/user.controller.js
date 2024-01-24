@@ -16,6 +16,7 @@ exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
 const user_entity_1 = require("./entities/user.entity");
+const user_enum_1 = require("./enum/user.enum");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -32,16 +33,13 @@ let UserController = class UserController {
         }
         return this.userService.createUser(user);
     }
-    async update(user) {
-        if (!user.id) {
-            throw new common_1.BadRequestException('ID is required for user update!');
-        }
-        return this.userService.updateUser(user);
+    async findByRole(role) {
+        return this.userService.findRole(role);
+    }
+    async update(userId, updateUserDto) {
+        return this.userService.updateUser(userId, updateUserDto);
     }
     async delete(id) {
-        if (!id) {
-            throw new common_1.BadRequestException('ID is required for user delete.');
-        }
         return this.userService.deleteUser(id);
     }
 };
@@ -67,15 +65,23 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "create", null);
 __decorate([
-    (0, common_1.Post)("/update"),
-    __param(0, (0, common_1.Body)(new common_1.ValidationPipe())),
+    (0, common_1.Get)('/roles/:role'),
+    __param(0, (0, common_1.Param)('role')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_entity_1.User]),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "findByRole", null);
+__decorate([
+    (0, common_1.Put)(":id"),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "update", null);
 __decorate([
-    (0, common_1.Post)("/delete"),
-    __param(0, (0, common_1.Body)("id")),
+    (0, common_1.Delete)(":id"),
+    __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)

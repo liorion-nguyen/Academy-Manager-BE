@@ -7,6 +7,9 @@ import { User } from './user/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
 import * as dotenv from 'dotenv';
 import { JwtModule } from '@nestjs/jwt';
+import { NotificationService } from './notification/notification.service';
+import { NotificationModule } from './notification/notification.module';
+import { Notification } from './notification/entities/notification.entity';
 
 dotenv.config();
 
@@ -16,11 +19,11 @@ dotenv.config();
       type: 'postgres',
       url: process.env.DATABASE_URL,
       synchronize: true,
-      entities: [User],
-
+      entities: [User, Notification],
     }),
     UserModule,
     AuthModule,
+    NotificationModule,
     JwtModule.register({
       secret: 'duy',
       signOptions: { expiresIn: '60s' },

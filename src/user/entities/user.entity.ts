@@ -1,5 +1,5 @@
 import { IsBoolean, IsDate, IsEmail, IsEnum, IsNotEmpty, IsString, Length, Matches } from "class-validator";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Gender, Role } from "../enum/user.enum";
 
 @Entity()
@@ -21,7 +21,6 @@ export class User {
     email: string;
 
     @Column()
-    @IsNotEmpty()
     @Length(10, 11)
     @IsString()
     @Matches(/^\d+$/, { message: 'Phone must only contain digits.' })
@@ -45,10 +44,22 @@ export class User {
     gender: Gender;
 
     @Column()
-    @IsNotEmpty()
     @IsString()
     @Length(8, 50)
     password: string;
+    @Column({ nullable: true })
+    address: string;
+
+    @CreateDateColumn()
+    @IsDate()
+    createdAt: Date;
+
+    @UpdateDateColumn()
+    @IsDate()
+    updatedAt: Date;
+
+    @Column({ default: true })
+    isActive: boolean;
 
     @Column({ default: false })
     isLoggedIn: boolean;
