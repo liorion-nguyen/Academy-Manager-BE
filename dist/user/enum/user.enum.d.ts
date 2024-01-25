@@ -8,3 +8,9 @@ export declare enum Role {
     Teacher = "Gi\u00E1o vi\u00EAn",
     Admin = "Admin"
 }
+export declare enum Sort {
+    desc = "desc",
+    asc = "asc",
+    DESC = "DESC",
+    ASC = "ASC"
+}

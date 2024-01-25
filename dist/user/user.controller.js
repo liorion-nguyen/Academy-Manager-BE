@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
 const user_entity_1 = require("./entities/user.entity");
 const user_enum_1 = require("./enum/user.enum");
+const search_dto_1 = require("./dto/search.dto");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -32,6 +33,9 @@ let UserController = class UserController {
             throw new common_1.BadRequestException("No user ID is required!");
         }
         return this.userService.createUser(user);
+    }
+    async search(data) {
+        return this.userService.searchUser(data);
     }
     async findByRole(role) {
         return this.userService.findRole(role);
@@ -64,6 +68,13 @@ __decorate([
     __metadata("design:paramtypes", [user_entity_1.User]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "create", null);
+__decorate([
+    (0, common_1.Post)("/search"),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [search_dto_1.SearchUserDto]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "search", null);
 __decorate([
     (0, common_1.Get)('/roles/:role'),
     __param(0, (0, common_1.Param)('role')),

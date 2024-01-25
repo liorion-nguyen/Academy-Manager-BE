@@ -3,6 +3,7 @@ import { Controller, Get, Post, Body, Param, BadRequestException, ValidationPipe
 import { UserService } from './user.service';
 import { User } from './entities/user.entity';
 import { Role } from './enum/user.enum';
+import { SearchUserDto } from './dto/search.dto';
 
 @Controller('users')
 export class UserController {
@@ -23,6 +24,12 @@ export class UserController {
       throw new BadRequestException("No user ID is required!");
     }
     return this.userService.createUser(user);
+  }
+
+
+  @Post("/search")
+  async search(@Body() data: SearchUserDto): Promise<User[]> {
+    return this.userService.searchUser(data);
   }
 
   @Get('/roles/:role')

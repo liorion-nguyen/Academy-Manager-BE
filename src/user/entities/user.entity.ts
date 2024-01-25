@@ -1,4 +1,4 @@
-import { IsBoolean, IsDate, IsEmail, IsEnum, IsNotEmpty, IsString, Length, Matches } from "class-validator";
+import { IsBoolean, IsDate, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, Length, Matches } from "class-validator";
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Gender, Role } from "../enum/user.enum";
 
@@ -52,10 +52,12 @@ export class User {
 
     @CreateDateColumn()
     @IsDate()
+    @IsOptional()
     createdAt: Date;
 
     @UpdateDateColumn()
     @IsDate()
+    @IsOptional()
     updatedAt: Date;
 
     @Column({ default: true })

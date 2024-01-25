@@ -5,6 +5,7 @@ import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { Role } from './enum/user.enum';
 import { validate } from 'class-validator';
+import { SearchUserDto } from './dto/search.dto';
 
 @Injectable()
 export class UserService {
@@ -68,6 +69,13 @@ export class UserService {
       updatedUser.password = hash;
     }
     return await this.userRepository.save(updatedUser);
+  }
+
+  async searchUser(data: SearchUserDto): Promise<User[]> {
+    const { gender, sortOrder } = data;
+    const users = await this.userRepository.find({ where: { gender }, order: { createdAt: sortOrder } });
+    return users;
+
   }
 
   async deleteUser(id: string): Promise<User> {
