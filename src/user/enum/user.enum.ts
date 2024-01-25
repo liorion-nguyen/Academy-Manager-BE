@@ -9,3 +9,10 @@ export enum Role {
     Teacher = "Giáo viên",
     Admin = "Admin"
 }
+
+export enum Sort {
+    desc = "desc",
+    asc = "asc",
+    DESC = "DESC",
+    ASC = "ASC",
+}

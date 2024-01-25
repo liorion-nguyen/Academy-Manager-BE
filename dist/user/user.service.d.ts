@@ -1,6 +1,7 @@
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { Role } from './enum/user.enum';
+import { SearchUserDto } from './dto/search.dto';
 export declare class UserService {
     private readonly userRepository;
     constructor(userRepository: Repository<User>);
@@ -10,6 +11,7 @@ export declare class UserService {
     findByemail(email: string): Promise<User | undefined>;
     createUser(user: User): Promise<User>;
     updateUser(userId: string, updateUserDto: Partial<User>): Promise<User>;
+    searchUser(data: SearchUserDto): Promise<User[]>;
     deleteUser(id: string): Promise<User>;
     saveTokens(id: string, accessToken: string, refreshToken: string): Promise<User>;
 }

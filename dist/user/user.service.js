@@ -73,6 +73,11 @@ let UserService = class UserService {
         }
         return await this.userRepository.save(updatedUser);
     }
+    async searchUser(data) {
+        const { gender, sortOrder } = data;
+        const users = await this.userRepository.find({ where: { gender }, order: { createdAt: sortOrder } });
+        return users;
+    }
     async deleteUser(id) {
         const existingUser = await this.userRepository.findOne({ where: { id } });
         if (!existingUser) {

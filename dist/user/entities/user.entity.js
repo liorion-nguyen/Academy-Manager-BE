@@ -74,11 +74,13 @@ __decorate([
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     (0, class_validator_1.IsDate)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Date)
 ], User.prototype, "createdAt", void 0);
 __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     (0, class_validator_1.IsDate)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Date)
 ], User.prototype, "updatedAt", void 0);
 __decorate([

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Role = exports.Gender = void 0;
+exports.Sort = exports.Role = exports.Gender = void 0;
 var Gender;
 (function (Gender) {
     Gender["Nam"] = "Nam";
@@ -13,4 +13,11 @@ var Role;
     Role["Teacher"] = "Gi\u00E1o vi\u00EAn";
     Role["Admin"] = "Admin";
 })(Role || (exports.Role = Role = {}));
+var Sort;
+(function (Sort) {
+    Sort["desc"] = "desc";
+    Sort["asc"] = "asc";
+    Sort["DESC"] = "DESC";
+    Sort["ASC"] = "ASC";
+})(Sort || (exports.Sort = Sort = {}));
 //# sourceMappingURL=user.enum.js.map
