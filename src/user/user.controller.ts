@@ -1,13 +1,29 @@
 // user.controller.ts
-import { Controller, Get, Post, Body, Param, BadRequestException, ValidationPipe, Put, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  BadRequestException,
+  ValidationPipe,
+  Put,
+  Delete,
+  UseInterceptors,
+  UploadedFile,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './entities/user.entity';
 import { Role } from './enum/user.enum';
 import { SearchUserDto } from './dto/search.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { stringify } from 'querystring';
+import { validateOrReject } from 'class-validator';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService) {}
 
   @Get()
   async findAll(): Promise<User[]> {
@@ -19,15 +35,28 @@ export class UserController {
   }
 
   @Post()
-  async create(@Body(new ValidationPipe()) user: User): Promise<User> {
-    if (user.id) {
-      throw new BadRequestException("No user ID is required!");
+  @UseInterceptors(FileInterceptor('avatar'))
+  async create(
+    @Body() user:User,
+    @UploadedFile() avatar: Express.Multer.File,
+  ) {
+    try {
+      if (user.id) {
+        throw new BadRequestException('No user ID is required!');
+      }
+      return this.userService.createUser(user, avatar);
+    } catch (error) {
+      console.error('Validation Error:', error);
+
+    if (error instanceof BadRequestException) {
+      throw error; 
     }
-    return this.userService.createUser(user);
+
+    throw new BadRequestException('Invalid user data', error.message);
+    }
   }
 
-
-  @Post("/search")
+  @Post('/search')
   async search(@Body() data: SearchUserDto): Promise<User[]> {
     return this.userService.searchUser(data);
   }
@@ -36,14 +65,18 @@ export class UserController {
   async findByRole(@Param('role') role: Role): Promise<User[]> {
     return this.userService.findRole(role);
   }
-  @Put(":id")
-  async update(@Param('id') userId: string, @Body() updateUserDto: Partial<User>): Promise<User> {
-    return this.userService.updateUser(userId, updateUserDto);
+  @Put(':id')
+  @UseInterceptors(FileInterceptor('avatar'))
+  async update(
+    @Param('id') userId: string,
+    @Body() updateUserDto: UpdateUserDto,
+    @UploadedFile() avatar: Express.Multer.File,
+  ): Promise<User> {
+    return this.userService.updateUser(userId, updateUserDto,avatar);
   }
 
-  @Delete(":id")
-  async delete(@Param("id") id: string): Promise<User> {
+  @Delete(':id')
+  async delete(@Param('id') id: string): Promise<User> {
     return this.userService.deleteUser(id);
   }
-
 }

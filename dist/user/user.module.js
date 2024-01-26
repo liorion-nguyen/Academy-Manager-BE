@@ -13,14 +13,15 @@ const user_controller_1 = require("./user.controller");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("./entities/user.entity");
 const user_repository_1 = require("./repository/user.repository");
+const firebase_service_1 = require("../firebase/firebase.service");
 let UserModule = class UserModule {
 };
 exports.UserModule = UserModule;
 exports.UserModule = UserModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, user_repository_1.UserRepository])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, user_repository_1.UserRepository]),],
         controllers: [user_controller_1.UserController],
-        providers: [user_service_1.UserService],
+        providers: [user_service_1.UserService, firebase_service_1.FirebaseService],
     })
 ], UserModule);
 //# sourceMappingURL=user.module.js.map

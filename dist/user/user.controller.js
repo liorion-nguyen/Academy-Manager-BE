@@ -18,6 +18,8 @@ const user_service_1 = require("./user.service");
 const user_entity_1 = require("./entities/user.entity");
 const user_enum_1 = require("./enum/user.enum");
 const search_dto_1 = require("./dto/search.dto");
+const platform_express_1 = require("@nestjs/platform-express");
+const update_user_dto_1 = require("./dto/update-user.dto");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -28,11 +30,20 @@ let UserController = class UserController {
     async findById(id) {
         return this.userService.findById(id);
     }
-    async create(user) {
-        if (user.id) {
-            throw new common_1.BadRequestException("No user ID is required!");
+    async create(user, avatar) {
+        try {
+            if (user.id) {
+                throw new common_1.BadRequestException('No user ID is required!');
+            }
+            return this.userService.createUser(user, avatar);
         }
-        return this.userService.createUser(user);
+        catch (error) {
+            console.error('Validation Error:', error);
+            if (error instanceof common_1.BadRequestException) {
+                throw error;
+            }
+            throw new common_1.BadRequestException('Invalid user data', error.message);
+        }
     }
     async search(data) {
         return this.userService.searchUser(data);
@@ -40,8 +51,8 @@ let UserController = class UserController {
     async findByRole(role) {
         return this.userService.findRole(role);
     }
-    async update(userId, updateUserDto) {
-        return this.userService.updateUser(userId, updateUserDto);
+    async update(userId, updateUserDto, avatar) {
+        return this.userService.updateUser(userId, updateUserDto, avatar);
     }
     async delete(id) {
         return this.userService.deleteUser(id);
@@ -63,13 +74,15 @@ __decorate([
 ], UserController.prototype, "findById", null);
 __decorate([
     (0, common_1.Post)(),
-    __param(0, (0, common_1.Body)(new common_1.ValidationPipe())),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('avatar')),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_entity_1.User]),
+    __metadata("design:paramtypes", [user_entity_1.User, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "create", null);
 __decorate([
-    (0, common_1.Post)("/search"),
+    (0, common_1.Post)('/search'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [search_dto_1.SearchUserDto]),
@@ -83,16 +96,18 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "findByRole", null);
 __decorate([
-    (0, common_1.Put)(":id"),
+    (0, common_1.Put)(':id'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('avatar')),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, update_user_dto_1.UpdateUserDto, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "update", null);
 __decorate([
-    (0, common_1.Delete)(":id"),
-    __param(0, (0, common_1.Param)("id")),
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)

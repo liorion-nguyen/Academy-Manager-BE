@@ -6,12 +6,14 @@ import * as bcrypt from 'bcrypt';
 import { Role } from './enum/user.enum';
 import { validate } from 'class-validator';
 import { SearchUserDto } from './dto/search.dto';
+import { FirebaseService } from 'src/firebase/firebase.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly filebaseService: FirebaseService
   ) { }
 
   async findAll(): Promise<User[]> {
@@ -34,41 +36,47 @@ export class UserService {
     return this.userRepository.findOne({ where: { email } });
   }
 
-  async createUser(user: User): Promise<User> {
+  async createUser(user: User, avatar: Express.Multer.File){
     let existingUser = await this.userRepository.findOne({ where: { email: user.email } });
 
     if (existingUser) {
       throw new BadRequestException('Account already exists');
+    }
+    if(avatar){
+      const avatarUrl = await this.filebaseService.UploadImage(avatar);
+      user.avatar = avatarUrl;
     }
     const hash: any = await bcrypt.hash(user.password, 10);
     user.password = hash;
     return this.userRepository.save(user);
   }
 
-  async updateUser(userId: string, updateUserDto: Partial<User>): Promise<User> {
+  async updateUser(userId: string, updateUserDto: Partial<User>, avatar: Express.Multer.File): Promise<User> {
     let user = await this.findById(userId);
     if (!user) {
       throw new NotFoundException('User not found');
     }
-
-    const updatedUser = this.userRepository.create({
-      ...user,
-      ...updateUserDto,
-      updatedAt: new Date(),
-    }); const errors = await validate(updatedUser);
-
-    if (errors.length > 0) {
-      const errorArray = errors.map(error => ({
-        property: error.property,
-        constraints: error.constraints,
-      }));
-      throw new BadRequestException({ message: errorArray });
+    if(avatar){
+      try {
+        user.avatar  && await this.filebaseService.DeleteImage(user.avatar);
+        
+      } catch (error) {
+        console.log(error)
+      }
+      const avatarUrl = await this.filebaseService.UploadImage(avatar);
+      user.avatar = avatarUrl;
+    }else{
+      delete updateUserDto.avatar;
     }
-    if (updatedUser.password) {
-      const hash: any = await bcrypt.hash(updatedUser.password, 10);
-      updatedUser.password = hash;
+
+    
+    if (updateUserDto.password) {
+      const hash: any = await bcrypt.hash(updateUserDto.password, 10);
+      updateUserDto.password = hash;
     }
-    return await this.userRepository.save(updatedUser);
+    console.log(updateUserDto)
+    Object.assign(user, updateUserDto);
+    return await this.userRepository.save(user);
   }
 
   async searchUser(data: SearchUserDto): Promise<User[]> {

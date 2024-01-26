@@ -18,6 +18,7 @@ const dotenv = require("dotenv");
 const jwt_1 = require("@nestjs/jwt");
 const notification_module_1 = require("./notification/notification.module");
 const notification_entity_1 = require("./notification/entities/notification.entity");
+const firebase_module_1 = require("./firebase/firebase.module");
 dotenv.config();
 let AppModule = class AppModule {
 };
@@ -33,6 +34,7 @@ exports.AppModule = AppModule = __decorate([
             }),
             user_module_1.UserModule,
             auth_module_1.AuthModule,
+            firebase_module_1.FirebaseModule,
             notification_module_1.NotificationModule,
             jwt_1.JwtModule.register({
                 secret: 'duy',

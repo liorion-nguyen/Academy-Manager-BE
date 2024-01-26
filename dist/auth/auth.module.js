@@ -16,6 +16,7 @@ const user_service_1 = require("../user/user.service");
 const jwt_1 = require("@nestjs/jwt");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("../user/entities/user.entity");
+const firebase_service_1 = require("../firebase/firebase.service");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -28,7 +29,7 @@ exports.AuthModule = AuthModule = __decorate([
                 signOptions: { expiresIn: '60s' },
             }),],
         controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService, user_service_1.UserService, local_strategy_1.LocalStrategy],
+        providers: [auth_service_1.AuthService, user_service_1.UserService, local_strategy_1.LocalStrategy, firebase_service_1.FirebaseService],
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map

@@ -40,15 +40,18 @@ export class User {
         default: Gender.Khac
     })
     @IsNotEmpty()
-    @IsEnum(Gender, { message: "Invalid gender. Must be one of 'Nam', 'Nu'." })
+    @IsEnum(Gender, { message: "Invalid gender. Must be one of 'Nam', 'Nữ'." })
     gender: Gender;
 
     @Column()
     @IsString()
     @Length(8, 50)
     password: string;
+    
     @Column({ nullable: true })
     address: string;
+    @Column({nullable: true})
+    avatar: string;
 
     @CreateDateColumn()
     @IsDate()

@@ -8,6 +8,7 @@ export declare class User {
     gender: Gender;
     password: string;
     address: string;
+    avatar: string;
     createdAt: Date;
     updatedAt: Date;
     isActive: boolean;

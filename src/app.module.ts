@@ -10,6 +10,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { NotificationService } from './notification/notification.service';
 import { NotificationModule } from './notification/notification.module';
 import { Notification } from './notification/entities/notification.entity';
+import { FirebaseModule } from './firebase/firebase.module';
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ dotenv.config();
     }),
     UserModule,
     AuthModule,
+    FirebaseModule,
     NotificationModule,
     JwtModule.register({
       secret: 'duy',

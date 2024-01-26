@@ -18,10 +18,11 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const user_entity_1 = require("./entities/user.entity");
 const bcrypt = require("bcrypt");
-const class_validator_1 = require("class-validator");
+const firebase_service_1 = require("../firebase/firebase.service");
 let UserService = class UserService {
-    constructor(userRepository) {
+    constructor(userRepository, filebaseService) {
         this.userRepository = userRepository;
+        this.filebaseService = filebaseService;
     }
     async findAll() {
         return this.userRepository.find();
@@ -40,38 +41,44 @@ let UserService = class UserService {
     async findByemail(email) {
         return this.userRepository.findOne({ where: { email } });
     }
-    async createUser(user) {
+    async createUser(user, avatar) {
         let existingUser = await this.userRepository.findOne({ where: { email: user.email } });
         if (existingUser) {
             throw new common_1.BadRequestException('Account already exists');
+        }
+        if (avatar) {
+            const avatarUrl = await this.filebaseService.UploadImage(avatar);
+            user.avatar = avatarUrl;
         }
         const hash = await bcrypt.hash(user.password, 10);
         user.password = hash;
         return this.userRepository.save(user);
     }
-    async updateUser(userId, updateUserDto) {
+    async updateUser(userId, updateUserDto, avatar) {
         let user = await this.findById(userId);
         if (!user) {
             throw new common_1.NotFoundException('User not found');
         }
-        const updatedUser = this.userRepository.create({
-            ...user,
-            ...updateUserDto,
-            updatedAt: new Date(),
-        });
-        const errors = await (0, class_validator_1.validate)(updatedUser);
-        if (errors.length > 0) {
-            const errorArray = errors.map(error => ({
-                property: error.property,
-                constraints: error.constraints,
-            }));
-            throw new common_1.BadRequestException({ message: errorArray });
+        if (avatar) {
+            try {
+                user.avatar && await this.filebaseService.DeleteImage(user.avatar);
+            }
+            catch (error) {
+                console.log(error);
+            }
+            const avatarUrl = await this.filebaseService.UploadImage(avatar);
+            user.avatar = avatarUrl;
         }
-        if (updatedUser.password) {
-            const hash = await bcrypt.hash(updatedUser.password, 10);
-            updatedUser.password = hash;
+        else {
+            delete updateUserDto.avatar;
         }
-        return await this.userRepository.save(updatedUser);
+        if (updateUserDto.password) {
+            const hash = await bcrypt.hash(updateUserDto.password, 10);
+            updateUserDto.password = hash;
+        }
+        console.log(updateUserDto);
+        Object.assign(user, updateUserDto);
+        return await this.userRepository.save(user);
     }
     async searchUser(data) {
         const { gender, sortOrder } = data;
@@ -104,6 +111,7 @@ exports.UserService = UserService;
 exports.UserService = UserService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        firebase_service_1.FirebaseService])
 ], UserService);
 //# sourceMappingURL=user.service.js.map

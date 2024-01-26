@@ -58,7 +58,7 @@ __decorate([
         default: user_enum_1.Gender.Khac
     }),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsEnum)(user_enum_1.Gender, { message: "Invalid gender. Must be one of 'Nam', 'Nu'." }),
+    (0, class_validator_1.IsEnum)(user_enum_1.Gender, { message: "Invalid gender. Must be one of 'Nam', 'Nữ'." }),
     __metadata("design:type", String)
 ], User.prototype, "gender", void 0);
 __decorate([
@@ -71,6 +71,10 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], User.prototype, "address", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "avatar", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     (0, class_validator_1.IsDate)(),
