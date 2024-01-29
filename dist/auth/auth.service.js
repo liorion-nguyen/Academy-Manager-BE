@@ -21,6 +21,7 @@ let AuthService = class AuthService {
     }
     async validateUser(email, password) {
         const user = await this.userService.findByemail(email);
+
         if (user && await bcrypt.compare(password, user.password)) {
             const { password, ...result } = user;
             return result;
@@ -64,6 +65,21 @@ let AuthService = class AuthService {
             access_token: newAccessToken,
             refresh_token: refreshToken,
         };
+    }
+    async checkAccesstoken(accessToken) {
+        try {
+            const user = await this.userService.findByAccess(accessToken);
+            delete user.createdAt;
+            delete user.updatedAt;
+            delete user.isLoggedIn;
+            delete user.lastLoginAt;
+            delete user.refreshToken;
+            delete user.accessToken;
+            return user;
+        }
+        catch (error) {
+            throw new common_1.UnauthorizedException('Accesstoken not found');
+        }
     }
 };
 exports.AuthService = AuthService;
