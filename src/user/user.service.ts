@@ -31,7 +31,9 @@ export class UserService {
 
     }
   }
-
+  async findByAccess(accessToken: string): Promise<User | undefined> {
+    return this.userRepository.findOne({ where: { accessToken } });
+  }
   async findByemail(email: string): Promise<User | undefined> {
     return this.userRepository.findOne({ where: { email } });
   }
