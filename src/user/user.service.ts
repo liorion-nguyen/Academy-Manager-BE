@@ -36,14 +36,14 @@ export class UserService {
     return this.userRepository.findOne({ where: { email } });
   }
 
-  async createUser(user: User, avatar: Express.Multer.File){
+  async createUser(user: User, file: Express.Multer.File){
     let existingUser = await this.userRepository.findOne({ where: { email: user.email } });
 
     if (existingUser) {
       throw new BadRequestException('Account already exists');
     }
-    if(avatar){
-      const avatarUrl = await this.filebaseService.UploadImage(avatar);
+    if(file){
+      const avatarUrl = await this.filebaseService.UploadImage(file);
       user.avatar = avatarUrl;
     }
     const hash: any = await bcrypt.hash(user.password, 10);
