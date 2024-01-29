@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
+import * as file from "./school-management-35e3b-firebase-adminsdk-6s1cu-4a7b54de22.json"
 
 @Injectable()
 export class FirebaseService {
