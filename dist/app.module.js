@@ -37,7 +37,7 @@ exports.AppModule = AppModule = __decorate([
             firebase_module_1.FirebaseModule,
             notification_module_1.NotificationModule,
             jwt_1.JwtModule.register({
-                secret: 'duy',
+                secret: 'liorion',
                 signOptions: { expiresIn: '60s' },
             }),
         ],

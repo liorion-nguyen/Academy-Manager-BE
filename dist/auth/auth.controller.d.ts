@@ -6,8 +6,7 @@ export declare class AuthController {
         access_token: string;
         refresh_token: string;
     }>;
-    checkAccesstoken(access: string): Promise<import("../user/entities/user.entity").User>;
-
+    checkAccesstoken(access: string): Promise<import("src/user/entities/user.entity").User>;
     refreshTokens(req: any): Promise<{
         access_token: string;
         refresh_token: string;

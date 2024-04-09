@@ -26,7 +26,6 @@ let AuthController = class AuthController {
     async checkAccesstoken(access) {
         return this.authService.checkAccesstoken(access);
     }
-
     async refreshTokens(req) {
         const { refresh_token } = req.body;
         return this.authService.refreshTokens(refresh_token);

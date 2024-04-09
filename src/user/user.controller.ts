@@ -6,7 +6,6 @@ import {
   Body,
   Param,
   BadRequestException,
-  ValidationPipe,
   Put,
   Delete,
   UseInterceptors,
@@ -17,8 +16,6 @@ import { User } from './entities/user.entity';
 import { Role } from './enum/user.enum';
 import { SearchUserDto } from './dto/search.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { stringify } from 'querystring';
-import { validateOrReject } from 'class-validator';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
@@ -29,6 +26,7 @@ export class UserController {
   async findAll(): Promise<User[]> {
     return this.userService.findAll();
   }
+
   @Get(':id')
   async findById(@Param('id') id: string): Promise<User> {
     return this.userService.findById(id);
@@ -65,6 +63,7 @@ export class UserController {
   async findByRole(@Param('role') role: Role): Promise<User[]> {
     return this.userService.findRole(role);
   }
+
   @Put(':id')
   @UseInterceptors(FileInterceptor('avatar'))
   async update(

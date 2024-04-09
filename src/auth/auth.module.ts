@@ -14,7 +14,7 @@ import { FirebaseService } from 'src/firebase/firebase.service';
   imports: [TypeOrmModule.forFeature([User]), 
     PassportModule,
   JwtModule.register({
-    secret: 'duy',
+    secret: 'liorion',
     signOptions: { expiresIn: '60s' },
   }),],
   controllers: [AuthController],

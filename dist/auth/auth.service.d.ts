@@ -15,5 +15,5 @@ export declare class AuthService {
         access_token: string;
         refresh_token: string;
     }>;
-    checkAccesstoken(accessToken: string): Promise<import("../user/entities/user.entity").User>;
+    checkAccesstoken(accessToken: string): Promise<import("src/user/entities/user.entity").User>;
 }
