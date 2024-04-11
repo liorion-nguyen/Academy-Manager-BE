@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
-=======
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
->>>>>>> 176a68f70f82014d60fd9fdd92d6b400ab8944f7
+import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guard/local-auth.guard';
 
@@ -17,8 +13,8 @@ export class AuthController {
     }
 
     @Post('token')
-    async checkAccesstoken(@Body('access') access:string) {
-        return this.authService.checkAccesstoken(access);
+    async getUserFromAccessToken(@Body('access') access:string) {
+        return this.authService.getUserFromAccessToken(access);
     }
 
     @Post('refresh')
