@@ -21,6 +21,8 @@ const notification_entity_1 = require("./notification/entities/notification.enti
 const firebase_module_1 = require("./firebase/firebase.module");
 const class_module_1 = require("./class/class.module");
 const class_entities_1 = require("./class/entities/class.entities");
+const message_module_1 = require("./message/message.module");
+const message_entities_1 = require("./message/entities/message.entities");
 dotenv.config();
 let AppModule = class AppModule {
 };
@@ -32,11 +34,12 @@ exports.AppModule = AppModule = __decorate([
                 type: 'postgres',
                 url: process.env.DATABASE_URL,
                 synchronize: true,
-                entities: [user_entity_1.User, notification_entity_1.Notification, class_entities_1.Class],
+                entities: [user_entity_1.User, notification_entity_1.Notification, class_entities_1.Class, message_entities_1.Message],
             }),
             user_module_1.UserModule,
             class_module_1.ClassModule,
             auth_module_1.AuthModule,
+            message_module_1.MessageModule,
             firebase_module_1.FirebaseModule,
             notification_module_1.NotificationModule,
             jwt_1.JwtModule.register({
