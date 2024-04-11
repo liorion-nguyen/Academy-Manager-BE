@@ -9,7 +9,7 @@ export class UpdateUserDto  {
     @Column()
     @IsString()
     @Length(10, 100)
-    @Matches(/^(?:[\p{L}\s]+(?:\s+[\p{L}\s]+){2,})?$/u, { message: 'Fullname must only contain Vietnamese letters and at least 2 spaces between words.' })
+    @Matches(/^(?:[\p{L}\s]+(?:\s+[\p{L}\s]+){1,})?$/u, { message: 'Fullname must only contain Vietnamese letters and at least 1 spaces between words.' })
     fullName: string;
 
     @IsOptional()
@@ -23,9 +23,9 @@ export class UpdateUserDto  {
     @Column({
         type: 'enum',
         enum: Gender,
-        default: Gender.Khac
+        default: Gender.Other
     })
-    @IsEnum(Gender, { message: "Invalid gender. Must be one of 'Nam', 'Nữ'." })
+    @IsEnum(Gender, { message: "Invalid gender. Must be one of 'male', 'female'." })
     gender: Gender;
 
     @IsOptional()

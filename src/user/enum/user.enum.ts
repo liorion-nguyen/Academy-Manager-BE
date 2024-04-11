@@ -1,13 +1,13 @@
 export enum Gender {
-    Nam = 'Nam',
-    Nu = 'Nữ',
-    Khac = 'Khác',
+    Male = 'male',
+    Female = 'female',
+    Other = 'other',
 }
 
 export enum Role {
-    Student = "Học sinh",
-    Teacher = "Giáo viên",
-    Admin = "Admin"
+    Student = "student",
+    Teacher = "teacher",
+    Admin = "admin"
 }
 
 export enum Sort {

@@ -1,5 +1,5 @@
 import { IsBoolean, IsDate, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, Length, Matches } from "class-validator";
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Gender, Role } from "../enum/user.enum";
 
 @Entity()
@@ -11,7 +11,7 @@ export class User {
     @IsString()
     @IsNotEmpty()
     @Length(10, 100)
-    @Matches(/^(?:[\p{L}\s]+(?:\s+[\p{L}\s]+){2,})?$/u, { message: 'Fullname must only contain Vietnamese letters and at least 2 spaces between words.' })
+    @Matches(/^(?:[\p{L}\s]+(?:\s+[\p{L}\s]+){1,})?$/u, { message: 'Fullname must only contain Vietnamese letters and at least 1 spaces between words.' })
     fullName: string;
 
     @Column()
@@ -37,10 +37,10 @@ export class User {
     @Column({
         type: 'enum',
         enum: Gender,
-        default: Gender.Khac
+        default: Gender.Other
     })
     @IsNotEmpty()
-    @IsEnum(Gender, { message: "Invalid gender. Must be one of 'Nam', 'Nữ'." })
+    @IsEnum(Gender, { message: "Invalid gender. Must be one of 'male', 'female'." })
     gender: Gender;
 
     @Column()

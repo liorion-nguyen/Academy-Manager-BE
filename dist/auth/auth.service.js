@@ -15,9 +15,9 @@ const jwt_1 = require("@nestjs/jwt");
 const user_service_1 = require("../user/user.service");
 const bcrypt = require("bcrypt");
 let AuthService = class AuthService {
-    constructor(userService, jwtService) {
-        this.userService = userService;
+    constructor(jwtService, userService) {
         this.jwtService = jwtService;
+        this.userService = userService;
     }
     async validateUser(email, password) {
         const user = await this.userService.findByemail(email);
@@ -65,11 +65,37 @@ let AuthService = class AuthService {
             refresh_token: refreshToken,
         };
     }
+    async getUserFromAccessToken(accessToken) {
+        try {
+            const jwtParts = accessToken.split('.');
+            if (jwtParts.length !== 3) {
+                throw new Error('Invalid Access Token');
+            }
+            const encodedPayload = jwtParts[1];
+            const decodedPayload = Buffer.from(encodedPayload, 'base64').toString('utf-8');
+            const data = JSON.parse(decodedPayload);
+            const user = await this.userService.findByemail(data.email);
+            return {
+                id: user.id,
+                fullName: user.fullName,
+                email: user.email,
+                phone: user.phone,
+                role: user.role,
+                gender: user.gender,
+                address: user.address,
+                avatar: user.avatar,
+                isActive: true
+            };
+        }
+        catch (error) {
+            return false;
+        }
+    }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [user_service_1.UserService,
-        jwt_1.JwtService])
+    __metadata("design:paramtypes", [jwt_1.JwtService,
+        user_service_1.UserService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

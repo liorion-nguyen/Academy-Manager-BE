@@ -1,9 +1,9 @@
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 export declare class AuthService {
-    private readonly userService;
     private readonly jwtService;
-    constructor(userService: UserService, jwtService: JwtService);
+    private readonly userService;
+    constructor(jwtService: JwtService, userService: UserService);
     validateUser(email: string, password: string): Promise<any>;
     login(user: any): Promise<{
         access_token: string;
@@ -14,5 +14,16 @@ export declare class AuthService {
     refreshTokens(refreshToken: string): Promise<{
         access_token: string;
         refresh_token: string;
+    }>;
+    getUserFromAccessToken(accessToken: string): Promise<false | {
+        id: string;
+        fullName: string;
+        email: string;
+        phone: string;
+        role: import("../user/enum/user.enum").Role;
+        gender: import("../user/enum/user.enum").Gender;
+        address: string;
+        avatar: string;
+        isActive: boolean;
     }>;
 }

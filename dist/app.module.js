@@ -19,6 +19,8 @@ const jwt_1 = require("@nestjs/jwt");
 const notification_module_1 = require("./notification/notification.module");
 const notification_entity_1 = require("./notification/entities/notification.entity");
 const firebase_module_1 = require("./firebase/firebase.module");
+const class_module_1 = require("./class/class.module");
+const class_entities_1 = require("./class/entities/class.entities");
 dotenv.config();
 let AppModule = class AppModule {
 };
@@ -30,14 +32,15 @@ exports.AppModule = AppModule = __decorate([
                 type: 'postgres',
                 url: process.env.DATABASE_URL,
                 synchronize: true,
-                entities: [user_entity_1.User, notification_entity_1.Notification],
+                entities: [user_entity_1.User, notification_entity_1.Notification, class_entities_1.Class],
             }),
             user_module_1.UserModule,
+            class_module_1.ClassModule,
             auth_module_1.AuthModule,
             firebase_module_1.FirebaseModule,
             notification_module_1.NotificationModule,
             jwt_1.JwtModule.register({
-                secret: 'duy',
+                secret: 'liorion',
                 signOptions: { expiresIn: '60s' },
             }),
         ],

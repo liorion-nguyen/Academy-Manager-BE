@@ -4,10 +4,8 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { Role } from './enum/user.enum';
-import { validate } from 'class-validator';
 import { SearchUserDto } from './dto/search.dto';
 import { FirebaseService } from 'src/firebase/firebase.service';
-
 @Injectable()
 export class UserService {
   constructor(
@@ -17,18 +15,20 @@ export class UserService {
   ) { }
 
   async findAll(): Promise<User[]> {
-    return this.userRepository.find();
+    return this.userRepository.find({
+      select: ['id', 'fullName', 'email', 'phone', 'role', 'gender', 'address', 'avatar', 'isActive', 'createdAt', 'updatedAt']
+    });
   }
   async findRole(role: Role): Promise<User[]> {
-    return this.userRepository.find({ where: { role } });
+    const user = await this.userRepository.find({ where: { role }, select: ['id', 'fullName', 'email', 'phone', 'role', 'gender', 'address', 'avatar', 'isActive', 'createdAt', 'updatedAt'] });
+    return user;
   }
 
   async findById(id: string): Promise<User | undefined> {
     try {
-      return this.userRepository.findOne({ where: { id } });
+      return this.userRepository.findOne({ where: { id } , select: ['id', 'fullName', 'email', 'phone', 'role', 'gender', 'address', 'avatar', 'isActive', 'createdAt', 'updatedAt'] });
     } catch (error) {
       throw new BadRequestException(`User with id ${id} not found`);
-
     }
   }
 
@@ -36,13 +36,13 @@ export class UserService {
     return this.userRepository.findOne({ where: { email } });
   }
 
-  async createUser(user: User, file: Express.Multer.File){
+  async createUser(user: User, file: Express.Multer.File) {
     let existingUser = await this.userRepository.findOne({ where: { email: user.email } });
 
     if (existingUser) {
       throw new BadRequestException('Account already exists');
     }
-    if(file){
+    if (file) {
       const avatarUrl = await this.filebaseService.UploadImage(file);
       user.avatar = avatarUrl;
     }
@@ -56,20 +56,18 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    if(avatar){
+    if (avatar) {
       try {
-        user.avatar  && await this.filebaseService.DeleteImage(user.avatar);
-        
+        user.avatar && await this.filebaseService.DeleteImage(user.avatar);
+
       } catch (error) {
         console.log(error)
       }
       const avatarUrl = await this.filebaseService.UploadImage(avatar);
       user.avatar = avatarUrl;
-    }else{
+    } else {
       delete updateUserDto.avatar;
     }
-
-    
     if (updateUserDto.password) {
       const hash: any = await bcrypt.hash(updateUserDto.password, 10);
       updateUserDto.password = hash;
@@ -103,6 +101,8 @@ export class UserService {
   async saveTokens(id: string, accessToken: string, refreshToken: string) {
     const user = await this.userRepository.findOne({ where: { id } });
     if (user) {
+      const date = new Date();
+      user.lastLoginAt = date;
       user.accessToken = accessToken;
       user.refreshToken = refreshToken;
       return this.userRepository.save(user);

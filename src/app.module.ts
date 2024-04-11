@@ -11,6 +11,8 @@ import { NotificationService } from './notification/notification.service';
 import { NotificationModule } from './notification/notification.module';
 import { Notification } from './notification/entities/notification.entity';
 import { FirebaseModule } from './firebase/firebase.module';
+import { ClassModule } from './class/class.module';
+import { Class } from './class/entities/class.entities';
 
 dotenv.config();
 
@@ -20,14 +22,15 @@ dotenv.config();
       type: 'postgres',
       url: process.env.DATABASE_URL,
       synchronize: true,
-      entities: [User, Notification],
+      entities: [User, Notification, Class],
     }),
     UserModule,
+    ClassModule,
     AuthModule,
     FirebaseModule,
     NotificationModule,
     JwtModule.register({
-      secret: 'duy',
+      secret: 'liorion',
       signOptions: { expiresIn: '60s' },
     }),
   ],

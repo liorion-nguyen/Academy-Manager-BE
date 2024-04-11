@@ -22,12 +22,14 @@ let AuthModule = class AuthModule {
 exports.AuthModule = AuthModule;
 exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.User]),
+        imports: [
+            typeorm_1.TypeOrmModule.forFeature([user_entity_1.User]),
             passport_1.PassportModule,
             jwt_1.JwtModule.register({
-                secret: 'duy',
+                secret: 'liorion',
                 signOptions: { expiresIn: '60s' },
-            }),],
+            }),
+        ],
         controllers: [auth_controller_1.AuthController],
         providers: [auth_service_1.AuthService, user_service_1.UserService, local_strategy_1.LocalStrategy, firebase_service_1.FirebaseService],
     })

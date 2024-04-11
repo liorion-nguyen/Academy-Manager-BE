@@ -7,17 +7,18 @@ import { UserService } from '../user/user.service';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
-import { UserRepository } from 'src/user/repository/user.repository';
 import { FirebaseService } from 'src/firebase/firebase.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), 
+  imports: [
+    TypeOrmModule.forFeature([User]),
     PassportModule,
-  JwtModule.register({
-    secret: 'duy',
-    signOptions: { expiresIn: '60s' },
-  }),],
+    JwtModule.register({
+      secret: 'liorion',
+      signOptions: { expiresIn: '60s' },
+    }),
+  ],
   controllers: [AuthController],
-  providers: [AuthService, UserService, LocalStrategy, FirebaseService],
+  providers: [AuthService, UserService, LocalStrategy, FirebaseService], 
 })
 export class AuthModule { }
