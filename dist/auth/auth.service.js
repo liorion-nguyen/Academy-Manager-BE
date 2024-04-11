@@ -56,33 +56,31 @@ let AuthService = class AuthService {
         if (!user || user.refreshToken !== refreshToken) {
             throw new common_1.UnauthorizedException();
         }
-        async;
-        getUserFromAccessToken(accessToken, string);
-        {
-            try {
-                const jwtParts = accessToken.split('.');
-                if (jwtParts.length !== 3) {
-                    throw new Error('Invalid Access Token');
-                }
-                const encodedPayload = jwtParts[1];
-                const decodedPayload = Buffer.from(encodedPayload, 'base64').toString('utf-8');
-                const data = JSON.parse(decodedPayload);
-                const user = await this.userService.findByemail(data.email);
-                return {
-                    id: user.id,
-                    fullName: user.fullName,
-                    email: user.email,
-                    phone: user.phone,
-                    role: user.role,
-                    gender: user.gender,
-                    address: user.address,
-                    avatar: user.avatar,
-                    isActive: true
-                };
+    }
+    async getUserFromAccessToken(accessToken) {
+        try {
+            const jwtParts = accessToken.split('.');
+            if (jwtParts.length !== 3) {
+                throw new Error('Invalid Access Token');
             }
-            catch (error) {
-                return false;
-            }
+            const encodedPayload = jwtParts[1];
+            const decodedPayload = Buffer.from(encodedPayload, 'base64').toString('utf-8');
+            const data = JSON.parse(decodedPayload);
+            const user = await this.userService.findByemail(data.email);
+            return {
+                id: user.id,
+                fullName: user.fullName,
+                email: user.email,
+                phone: user.phone,
+                role: user.role,
+                gender: user.gender,
+                address: user.address,
+                avatar: user.avatar,
+                isActive: true
+            };
+        }
+        catch (error) {
+            return false;
         }
     }
 };
