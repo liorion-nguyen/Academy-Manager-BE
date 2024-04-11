@@ -11,6 +11,7 @@ export declare class UserService {
     findAll(): Promise<User[]>;
     findRole(role: Role): Promise<User[]>;
     findById(id: string): Promise<User | undefined>;
+    findByAccess(accessToken: string): Promise<User | undefined>;
     findByemail(email: string): Promise<User | undefined>;
     createUser(user: User, file: Express.Multer.File): Promise<User>;
     updateUser(userId: string, updateUserDto: Partial<User>, avatar: Express.Multer.File): Promise<User>;

@@ -11,11 +11,7 @@ export declare class AuthService {
     }>;
     private generateRefreshToken;
     private saveTokensToDatabase;
-    refreshTokens(refreshToken: string): Promise<{
-        access_token: string;
-        refresh_token: string;
-    }>;
-    getUserFromAccessToken(accessToken: string): Promise<false | {
+    refreshTokens(refreshToken: string): Promise<false | {
         id: string;
         fullName: string;
         email: string;

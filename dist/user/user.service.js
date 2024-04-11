@@ -41,6 +41,9 @@ let UserService = class UserService {
             throw new common_1.BadRequestException(`User with id ${id} not found`);
         }
     }
+    async findByAccess(accessToken) {
+        return this.userRepository.findOne({ where: { accessToken } });
+    }
     async findByemail(email) {
         return this.userRepository.findOne({ where: { email } });
     }

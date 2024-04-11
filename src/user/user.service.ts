@@ -31,7 +31,9 @@ export class UserService {
       throw new BadRequestException(`User with id ${id} not found`);
     }
   }
-
+  async findByAccess(accessToken: string): Promise<User | undefined> {
+    return this.userRepository.findOne({ where: { accessToken } });
+  }
   async findByemail(email: string): Promise<User | undefined> {
     return this.userRepository.findOne({ where: { email } });
   }

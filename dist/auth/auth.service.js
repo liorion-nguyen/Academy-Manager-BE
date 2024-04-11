@@ -21,7 +21,7 @@ let AuthService = class AuthService {
     }
     async validateUser(email, password) {
         const user = await this.userService.findByemail(email);
-        if (user && await bcrypt.compare(password, user.password)) {
+        if (user && (await bcrypt.compare(password, user.password))) {
             const { password, ...result } = user;
             return result;
         }
@@ -56,39 +56,33 @@ let AuthService = class AuthService {
         if (!user || user.refreshToken !== refreshToken) {
             throw new common_1.UnauthorizedException();
         }
-        const newAccessToken = this.jwtService.sign({
-            sub: user.id,
-            email: user.email,
-        });
-        return {
-            access_token: newAccessToken,
-            refresh_token: refreshToken,
-        };
-    }
-    async getUserFromAccessToken(accessToken) {
-        try {
-            const jwtParts = accessToken.split('.');
-            if (jwtParts.length !== 3) {
-                throw new Error('Invalid Access Token');
+        async;
+        getUserFromAccessToken(accessToken, string);
+        {
+            try {
+                const jwtParts = accessToken.split('.');
+                if (jwtParts.length !== 3) {
+                    throw new Error('Invalid Access Token');
+                }
+                const encodedPayload = jwtParts[1];
+                const decodedPayload = Buffer.from(encodedPayload, 'base64').toString('utf-8');
+                const data = JSON.parse(decodedPayload);
+                const user = await this.userService.findByemail(data.email);
+                return {
+                    id: user.id,
+                    fullName: user.fullName,
+                    email: user.email,
+                    phone: user.phone,
+                    role: user.role,
+                    gender: user.gender,
+                    address: user.address,
+                    avatar: user.avatar,
+                    isActive: true
+                };
             }
-            const encodedPayload = jwtParts[1];
-            const decodedPayload = Buffer.from(encodedPayload, 'base64').toString('utf-8');
-            const data = JSON.parse(decodedPayload);
-            const user = await this.userService.findByemail(data.email);
-            return {
-                id: user.id,
-                fullName: user.fullName,
-                email: user.email,
-                phone: user.phone,
-                role: user.role,
-                gender: user.gender,
-                address: user.address,
-                avatar: user.avatar,
-                isActive: true
-            };
-        }
-        catch (error) {
-            return false;
+            catch (error) {
+                return false;
+            }
         }
     }
 };

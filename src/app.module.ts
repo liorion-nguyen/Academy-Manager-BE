@@ -7,7 +7,6 @@ import { User } from './user/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
 import * as dotenv from 'dotenv';
 import { JwtModule } from '@nestjs/jwt';
-import { NotificationService } from './notification/notification.service';
 import { NotificationModule } from './notification/notification.module';
 import { Notification } from './notification/entities/notification.entity';
 import { FirebaseModule } from './firebase/firebase.module';

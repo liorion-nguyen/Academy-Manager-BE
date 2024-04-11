@@ -23,6 +23,9 @@ let AuthController = class AuthController {
     async login(req) {
         return this.authService.login(req.body);
     }
+    async checkAccesstoken(access) {
+        return this.authService.checkAccesstoken(access);
+    }
     async refreshTokens(req) {
         const { refresh_token } = req.body;
         return this.authService.refreshTokens(refresh_token);
@@ -47,6 +50,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
+__decorate([
+    (0, common_1.Post)('token'),
+    __param(0, Body('access')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "checkAccesstoken", null);
 __decorate([
     (0, common_1.Post)('refresh'),
     __param(0, (0, common_1.Request)()),
