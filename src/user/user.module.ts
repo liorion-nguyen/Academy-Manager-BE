@@ -7,10 +7,10 @@ import { UserRepository } from './repository/user.repository';
 import { FirebaseService } from 'src/firebase/firebase.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, UserRepository]),],
+  imports: [
+    TypeOrmModule.forFeature([User, UserRepository]),
+  ],
   controllers: [UserController],
-  providers: [UserService,FirebaseService],
+  providers: [UserService, FirebaseService],
 })
-export class UserModule {
-
-}
+export class UserModule {}

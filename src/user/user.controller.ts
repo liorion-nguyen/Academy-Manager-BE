@@ -63,7 +63,7 @@ export class UserController {
   async findByRole(@Param('role') role: Role): Promise<User[]> {
     return this.userService.findRole(role);
   }
-
+  
   @Put(':id')
   @UseInterceptors(FileInterceptor('avatar'))
   async update(

@@ -25,7 +25,7 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.Length)(10, 100),
-    (0, class_validator_1.Matches)(/^(?:[\p{L}\s]+(?:\s+[\p{L}\s]+){2,})?$/u, { message: 'Fullname must only contain Vietnamese letters and at least 2 spaces between words.' }),
+    (0, class_validator_1.Matches)(/^(?:[\p{L}\s]+(?:\s+[\p{L}\s]+){1,})?$/u, { message: 'Fullname must only contain Vietnamese letters and at least 1 spaces between words.' }),
     __metadata("design:type", String)
 ], User.prototype, "fullName", void 0);
 __decorate([
@@ -55,10 +55,10 @@ __decorate([
     (0, typeorm_1.Column)({
         type: 'enum',
         enum: user_enum_1.Gender,
-        default: user_enum_1.Gender.Khac
+        default: user_enum_1.Gender.Other
     }),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsEnum)(user_enum_1.Gender, { message: "Invalid gender. Must be one of 'Nam', 'Nữ'." }),
+    (0, class_validator_1.IsEnum)(user_enum_1.Gender, { message: "Invalid gender. Must be one of 'male', 'female'." }),
     __metadata("design:type", String)
 ], User.prototype, "gender", void 0);
 __decorate([

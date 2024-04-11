@@ -25,14 +25,17 @@ let UserService = class UserService {
         this.filebaseService = filebaseService;
     }
     async findAll() {
-        return this.userRepository.find();
+        return this.userRepository.find({
+            select: ['id', 'fullName', 'email', 'phone', 'role', 'gender', 'address', 'avatar', 'isActive', 'createdAt', 'updatedAt']
+        });
     }
     async findRole(role) {
-        return this.userRepository.find({ where: { role } });
+        const user = await this.userRepository.find({ where: { role }, select: ['id', 'fullName', 'email', 'phone', 'role', 'gender', 'address', 'avatar', 'isActive', 'createdAt', 'updatedAt'] });
+        return user;
     }
     async findById(id) {
         try {
-            return this.userRepository.findOne({ where: { id } });
+            return this.userRepository.findOne({ where: { id }, select: ['id', 'fullName', 'email', 'phone', 'role', 'gender', 'address', 'avatar', 'isActive', 'createdAt', 'updatedAt'] });
         }
         catch (error) {
             throw new common_1.BadRequestException(`User with id ${id} not found`);
@@ -104,6 +107,8 @@ let UserService = class UserService {
     async saveTokens(id, accessToken, refreshToken) {
         const user = await this.userRepository.findOne({ where: { id } });
         if (user) {
+            const date = new Date();
+            user.lastLoginAt = date;
             user.accessToken = accessToken;
             user.refreshToken = refreshToken;
             return this.userRepository.save(user);

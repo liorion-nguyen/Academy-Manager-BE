@@ -33,11 +33,6 @@ __decorate([
     __metadata("design:type", String)
 ], Notification.prototype, "content", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
-    (0, class_validator_1.IsDate)(),
-    __metadata("design:type", Date)
-], Notification.prototype, "createdAt", void 0);
-__decorate([
     (0, typeorm_1.Column)(),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),

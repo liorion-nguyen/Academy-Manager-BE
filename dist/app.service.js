@@ -10,7 +10,7 @@ exports.AppService = void 0;
 const common_1 = require("@nestjs/common");
 let AppService = class AppService {
     getHello() {
-        return 'Welcome to School manager';
+        return 'Welcome to Liorion Manager Academy!';
     }
 };
 exports.AppService = AppService;
