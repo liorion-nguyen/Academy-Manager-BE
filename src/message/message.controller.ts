@@ -17,7 +17,13 @@ export class MessageController {
     }
 
     @Post()
-    async sendChat(@Body() content: ReturnMessage): Promise<string> {
+    async sendChat(@Body() content: ReturnMessage): Promise<any> {
         return this.messageService.sendChat(content);
     }
+
+    @Delete('/:id')
+    async deleteBox(@Param('id') id: string): Promise<any> {
+        return this.messageService.deleteBox(id);
+    }
+
 }

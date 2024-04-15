@@ -8,5 +8,6 @@ export declare class MessageService {
     constructor(userRepository: Repository<User>, messageRepository: Repository<Message>);
     getChat(boxId: string): Promise<Message[]>;
     getBoxChat(userId: string): Promise<string[]>;
-    sendChat(content: ReturnMessage): Promise<string>;
+    sendChat(content: ReturnMessage): Promise<any>;
+    deleteBox(boxId: string): Promise<any>;
 }
