@@ -5,5 +5,6 @@ export declare class MessageController {
     constructor(messageService: MessageService);
     getChat(id: string): Promise<any>;
     getBoxChat(id: string): Promise<any>;
-    sendChat(content: ReturnMessage): Promise<string>;
+    sendChat(content: ReturnMessage): Promise<any>;
+    deleteBox(id: string): Promise<any>;
 }

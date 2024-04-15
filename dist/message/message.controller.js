@@ -29,6 +29,9 @@ let MessageController = class MessageController {
     async sendChat(content) {
         return this.messageService.sendChat(content);
     }
+    async deleteBox(id) {
+        return this.messageService.deleteBox(id);
+    }
 };
 exports.MessageController = MessageController;
 __decorate([
@@ -52,6 +55,13 @@ __decorate([
     __metadata("design:paramtypes", [returnMess_entities_1.ReturnMessage]),
     __metadata("design:returntype", Promise)
 ], MessageController.prototype, "sendChat", null);
+__decorate([
+    (0, common_1.Delete)('/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], MessageController.prototype, "deleteBox", null);
 exports.MessageController = MessageController = __decorate([
     (0, common_1.Controller)('message'),
     __metadata("design:paramtypes", [message_service_1.MessageService])

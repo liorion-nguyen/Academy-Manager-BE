@@ -71,20 +71,36 @@ let MessageService = class MessageService {
                     mode: false,
                     content: content.content[content.content.length - 1].parts[0].text
                 });
-                this.messageRepository.save({
+                const saveMessage = await this.messageRepository.save({
                     userId: content.id,
                     boxId: boxId,
                     mode: true,
                     content: message
                 });
+                return {
+                    content: message,
+                    id: saveMessage.id,
+                    createAt: saveMessage.createdAt,
+                    creator: false,
+                    emoji: []
+                };
             }
             catch (error) {
                 throw new common_1.BadRequestException(`User with id ${content.id} not found`);
             }
-            return message;
         }
         catch (error) {
             console.error(error);
+            throw error;
+        }
+    }
+    async deleteBox(boxId) {
+        try {
+            await this.messageRepository.delete({ boxId: boxId });
+            return `Delete box chat ID: ${boxId} success`;
+        }
+        catch (error) {
+            console.error('Lỗi khi xoá boxId:', error);
             throw error;
         }
     }
