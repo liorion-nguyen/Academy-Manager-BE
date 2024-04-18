@@ -10,20 +10,19 @@ export class MessageController {
     async getChat(@Param('id') id: string): Promise<any> {
         return this.messageService.getChat(id);
     }
-
-    @Get('/box/:id')
-    async getBoxChat(@Param('id') id: string): Promise<any> {
-        return this.messageService.getBoxChat(id);
+    
+    @Post('/chatAi')
+    async sendChatAi(@Body() content: ReturnMessage): Promise<any> {
+        return this.messageService.sendChatAi(content);
     }
 
     @Post()
-    async sendChat(@Body() content: ReturnMessage): Promise<any> {
-        return this.messageService.sendChat(content);
+    async createMessage(@Body() content: any): Promise<any> {
+        return this.messageService.createMessage(content);
     }
 
     @Delete('/:id')
     async deleteBox(@Param('id') id: string): Promise<any> {
         return this.messageService.deleteBox(id);
     }
-
 }

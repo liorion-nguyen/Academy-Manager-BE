@@ -29,6 +29,9 @@ let NotificationService = class NotificationService {
     async findOne(id) {
         return this.notificationRepository.findOne({ where: { id } });
     }
+    async findUser(userId) {
+        return this.notificationRepository.find({ where: { userId } });
+    }
     async create(notification) {
         try {
             await this.userRepository.findOne({ where: { id: notification.userId } });

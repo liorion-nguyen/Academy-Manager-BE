@@ -1,7 +1,15 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
-import { IsString, IsNotEmpty, Length, IsOptional, IsBoolean, IsDate } from "class-validator";
+import { IsString, IsNotEmpty, Length, IsOptional, IsBoolean, IsDate, IsObject } from "class-validator";
 import { User } from "src/user/entities/user.entity";
 
+interface Emoji {
+    userId: string,
+    type: string
+}
+interface Reply {
+    id: string,
+    content: string
+}
 @Entity()
 export class Message {
     @PrimaryGeneratedColumn('uuid')
@@ -11,23 +19,29 @@ export class Message {
     @IsString()
     @IsNotEmpty()
     userId: string;
-    
+
     @ManyToOne(() => User, user => user.id)
     @JoinColumn({ name: 'userId' })
     user: User;
 
     @Column({ nullable: true })
+    @IsString()
     boxId: string;
-
-    @Column({ nullable: true })
-    @IsOptional()
-    @IsBoolean()
-    mode: boolean;
 
     @Column()
     @IsString()
     @IsNotEmpty()
     content: string;
+
+    @Column('jsonb', { nullable: true })
+    @IsObject()
+    @IsOptional()
+    reply: Reply[];
+
+    @Column('jsonb', { nullable: true })
+    @IsObject()
+    @IsOptional()
+    emoji: Emoji[];
 
     @CreateDateColumn()
     @IsDate()

@@ -8,6 +8,14 @@ export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
     findAll(): Promise<User[]>;
+    findNumber(pageOption: {
+        page?: number;
+        show?: number;
+        search?: string;
+    }): Promise<{
+        data: User[];
+        count: number;
+    }>;
     findById(id: string): Promise<User>;
     create(user: User, avatar: Express.Multer.File): Promise<User>;
     search(data: SearchUserDto): Promise<User[]>;

@@ -14,12 +14,13 @@ const message_controller_1 = require("./message.controller");
 const message_entities_1 = require("./entities/message.entities");
 const user_entity_1 = require("../user/entities/user.entity");
 const message_respository_1 = require("./respository/message.respository");
+const boxChat_entities_1 = require("../boxChat/entities/boxChat.entities");
 let MessageModule = class MessageModule {
 };
 exports.MessageModule = MessageModule;
 exports.MessageModule = MessageModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([message_entities_1.Message, user_entity_1.User, message_respository_1.MessageRepository])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([message_entities_1.Message, user_entity_1.User, boxChat_entities_1.BoxChat, message_respository_1.MessageRepository])],
         controllers: [message_controller_1.MessageController],
         providers: [message_service_1.MessageService],
     })

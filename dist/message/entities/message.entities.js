@@ -33,20 +33,27 @@ __decorate([
 ], Message.prototype, "user", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], Message.prototype, "boxId", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsBoolean)(),
-    __metadata("design:type", Boolean)
-], Message.prototype, "mode", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], Message.prototype, "content", void 0);
+__decorate([
+    (0, typeorm_1.Column)('jsonb', { nullable: true }),
+    (0, class_validator_1.IsObject)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Array)
+], Message.prototype, "reply", void 0);
+__decorate([
+    (0, typeorm_1.Column)('jsonb', { nullable: true }),
+    (0, class_validator_1.IsObject)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Array)
+], Message.prototype, "emoji", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     (0, class_validator_1.IsDate)(),

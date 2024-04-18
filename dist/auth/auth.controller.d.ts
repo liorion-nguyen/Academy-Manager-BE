@@ -11,8 +11,8 @@ export declare class AuthController {
         fullName: string;
         email: string;
         phone: string;
-        role: import("../user/enum/user.enum").Role;
-        gender: import("../user/enum/user.enum").Gender;
+        role: import("src/user/enum/user.enum").Role;
+        gender: import("src/user/enum/user.enum").Gender;
         address: string;
         avatar: string;
         isActive: boolean;
@@ -23,8 +23,8 @@ export declare class AuthController {
         fullName: string;
         email: string;
         phone: string;
-        role: import("../user/enum/user.enum").Role;
-        gender: import("../user/enum/user.enum").Gender;
+        role: import("src/user/enum/user.enum").Role;
+        gender: import("src/user/enum/user.enum").Gender;
         address: string;
         avatar: string;
         isActive: boolean;

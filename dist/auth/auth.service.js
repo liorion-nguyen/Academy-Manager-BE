@@ -32,10 +32,6 @@ let AuthService = class AuthService {
         const accessToken = this.jwtService.sign(payload);
         const refreshToken = this.generateRefreshToken();
         this.saveTokensToDatabase(user.id, accessToken, refreshToken);
-        console.log({
-            access_token: accessToken,
-            refresh_token: refreshToken,
-        });
         return {
             access_token: accessToken,
             refresh_token: refreshToken,

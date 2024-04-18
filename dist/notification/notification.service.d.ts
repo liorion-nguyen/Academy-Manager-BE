@@ -7,6 +7,7 @@ export declare class NotificationService {
     constructor(notificationRepository: Repository<Notification>, userRepository: Repository<User>);
     findAll(): Promise<Notification[]>;
     findOne(id: string): Promise<Notification | undefined>;
+    findUser(userId: string): Promise<Notification[] | undefined>;
     create(notification: Notification): Promise<Notification>;
     update(id: string, notification: Partial<Notification>): Promise<Notification | undefined>;
     remove(id: string): Promise<void>;

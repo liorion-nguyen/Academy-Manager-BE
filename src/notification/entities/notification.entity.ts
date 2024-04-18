@@ -26,8 +26,8 @@ export class Notification {
     @JoinColumn({ name: 'userId' })
     user: User;
 
-    // @CreateDateColumn()
-    // @IsDate()
-    // @IsOptional()
-    // createdAt: Date;
+    @CreateDateColumn()
+    @IsDate()
+    @IsOptional()
+    createdAt: Date;
 }

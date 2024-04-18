@@ -1,6 +1,6 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsOrder, ILike, Like, Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { Role } from './enum/user.enum';
@@ -24,9 +24,51 @@ export class UserService {
     return user;
   }
 
+  async findNumber(pageOption: {
+    page?: number;
+    show?: number;
+    search?: string;
+  }): Promise<{ data: User[]; count: number }> {
+    const sortOptions: FindOptionsOrder<User> = {
+      updatedAt: 'DESC',
+    };
+    const limit = pageOption?.show;
+    const skip = (pageOption?.page - 1) * pageOption?.show;
+
+    try {
+      const searchQuery = pageOption?.search?.trim();
+
+      const [users, totalCount] = await Promise.all([
+        this.userRepository.find({
+          skip,
+          take: limit,
+          order: sortOptions,
+          where: searchQuery
+            ? {
+              fullName: ILike(`%${searchQuery}%`),
+              email: ILike(`%${searchQuery}%`),
+            }
+            : undefined,
+          select: ['id', 'fullName', 'email', 'phone', 'role', 'gender', 'address', 'avatar', 'isActive', 'createdAt', 'updatedAt']
+        }),
+        this.userRepository.count(),
+      ]);
+      if (!users || users.length === 0) {
+        throw new NotFoundException('No users found matching the search criteria.');
+      }
+      return {
+        data: users,
+        count: totalCount,
+      };
+    } catch (error) {
+      console.error('Error:', error);
+      throw new InternalServerErrorException('Error finding users.', error.message);
+    }
+  }
+
   async findById(id: string): Promise<User | undefined> {
     try {
-      return this.userRepository.findOne({ where: { id } , select: ['id', 'fullName', 'email', 'phone', 'role', 'gender', 'address', 'avatar', 'isActive', 'createdAt', 'updatedAt'] });
+      return this.userRepository.findOne({ where: { id }, select: ['id', 'fullName', 'email', 'phone', 'role', 'gender', 'address', 'avatar', 'isActive', 'createdAt', 'updatedAt'] });
     } catch (error) {
       throw new BadRequestException(`User with id ${id} not found`);
     }

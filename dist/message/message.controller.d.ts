@@ -4,7 +4,7 @@ export declare class MessageController {
     private readonly messageService;
     constructor(messageService: MessageService);
     getChat(id: string): Promise<any>;
-    getBoxChat(id: string): Promise<any>;
-    sendChat(content: ReturnMessage): Promise<any>;
+    sendChatAi(content: ReturnMessage): Promise<any>;
+    createMessage(content: any): Promise<any>;
     deleteBox(id: string): Promise<any>;
 }

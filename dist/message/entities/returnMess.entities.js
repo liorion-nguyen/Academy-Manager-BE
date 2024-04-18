@@ -26,6 +26,16 @@ __decorate([
     __metadata("design:type", String)
 ], ReturnMessage.prototype, "boxId", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], ReturnMessage.prototype, "reply", void 0);
+__decorate([
+    (0, typeorm_1.Column)('jsonb', { nullable: true }),
+    (0, class_validator_1.IsObject)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Array)
+], ReturnMessage.prototype, "emoji", void 0);
+__decorate([
     (0, typeorm_1.Column)("jsonb"),
     (0, class_validator_1.ValidateNested)({ each: true }),
     __metadata("design:type", Array)

@@ -18,6 +18,11 @@ export class NotificationController {
         return this.notificationService.findOne(id);
     }
 
+    @Get('/user/:id')
+    findUser(@Param('id') id: string): Promise<Notification[] | undefined> {
+        return this.notificationService.findUser(id);
+    }
+
     @Post()
     create(@Body() notification: Notification) {
         return this.notificationService.create(notification);
