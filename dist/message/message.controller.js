@@ -23,11 +23,11 @@ let MessageController = class MessageController {
     async getChat(id) {
         return this.messageService.getChat(id);
     }
-    async getBoxChat(id) {
-        return this.messageService.getBoxChat(id);
+    async sendChatAi(content) {
+        return this.messageService.sendChatAi(content);
     }
-    async sendChat(content) {
-        return this.messageService.sendChat(content);
+    async createMessage(content) {
+        return this.messageService.createMessage(content);
     }
     async deleteBox(id) {
         return this.messageService.deleteBox(id);
@@ -42,19 +42,19 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], MessageController.prototype, "getChat", null);
 __decorate([
-    (0, common_1.Get)('/box/:id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], MessageController.prototype, "getBoxChat", null);
-__decorate([
-    (0, common_1.Post)(),
+    (0, common_1.Post)('/chatAi'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [returnMess_entities_1.ReturnMessage]),
     __metadata("design:returntype", Promise)
-], MessageController.prototype, "sendChat", null);
+], MessageController.prototype, "sendChatAi", null);
+__decorate([
+    (0, common_1.Post)(),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], MessageController.prototype, "createMessage", null);
 __decorate([
     (0, common_1.Delete)('/:id'),
     __param(0, (0, common_1.Param)('id')),

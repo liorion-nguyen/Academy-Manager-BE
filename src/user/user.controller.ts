@@ -10,6 +10,7 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './entities/user.entity';
@@ -25,6 +26,15 @@ export class UserController {
   @Get()
   async findAll(): Promise<User[]> {
     return this.userService.findAll();
+  }
+
+  @Get("/page")
+  async findNumber( @Query() pageOption: {
+    page?: number,
+    show?: number,
+    search?: string,
+  }): Promise<{ data: User[], count: number }> {
+    return this.userService.findNumber(pageOption);
   }
 
   @Get(':id')

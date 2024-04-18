@@ -5,6 +5,7 @@ export declare class NotificationController {
     constructor(notificationService: NotificationService);
     findAll(): Promise<Notification[]>;
     findOne(id: string): Promise<Notification | undefined>;
+    findUser(id: string): Promise<Notification[] | undefined>;
     create(notification: Notification): Promise<Notification>;
     update(id: string, notification: Partial<Notification>): Promise<Notification | undefined>;
     remove(id: string): Promise<void>;

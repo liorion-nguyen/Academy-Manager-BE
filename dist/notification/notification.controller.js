@@ -26,6 +26,9 @@ let NotificationController = class NotificationController {
     findOne(id) {
         return this.notificationService.findOne(id);
     }
+    findUser(id) {
+        return this.notificationService.findUser(id);
+    }
     create(notification) {
         return this.notificationService.create(notification);
     }
@@ -50,6 +53,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], NotificationController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Get)('/user/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], NotificationController.prototype, "findUser", null);
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),

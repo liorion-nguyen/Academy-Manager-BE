@@ -1,6 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-import { IsString, IsNotEmpty, Length, ValidateNested } from "class-validator";
+import { IsString, IsNotEmpty, Length, ValidateNested, IsObject, IsOptional } from "class-validator";
 
+interface Emoji {
+    userId: string,
+    type: string
+}
 @Entity()
 export class ReturnMessage {
     @Column()
@@ -10,6 +14,14 @@ export class ReturnMessage {
 
     @Column({ nullable: true })
     boxId: string;
+
+    @Column({ nullable: true })
+    reply: string;
+
+    @Column('jsonb', { nullable: true })
+    @IsObject()
+    @IsOptional()
+    emoji: Emoji[];
 
     @Column("jsonb")
     @ValidateNested({ each: true })

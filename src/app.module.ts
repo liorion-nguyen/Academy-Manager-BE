@@ -14,6 +14,9 @@ import { ClassModule } from './class/class.module';
 import { Class } from './class/entities/class.entities';
 import { MessageModule } from './message/message.module';
 import { Message } from './message/entities/message.entities';
+import { BoxChat } from './boxChat/entities/boxChat.entities';
+import { BoxChatModule } from './boxChat/boxChat.module';
+import { SocketGateway } from './socket/socket.gateway';
 
 dotenv.config();
 
@@ -23,12 +26,13 @@ dotenv.config();
       type: 'postgres',
       url: process.env.DATABASE_URL,
       synchronize: true,
-      entities: [User, Notification, Class, Message],
+      entities: [User, Notification, Class, Message, BoxChat],
     }),
     UserModule,
     ClassModule,
     AuthModule,
     MessageModule,
+    BoxChatModule,
     FirebaseModule,
     NotificationModule,
     JwtModule.register({
@@ -37,7 +41,7 @@ dotenv.config();
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, SocketGateway],
 })
 
 export class AppModule {

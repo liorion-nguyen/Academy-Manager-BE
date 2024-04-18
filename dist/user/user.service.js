@@ -33,6 +33,42 @@ let UserService = class UserService {
         const user = await this.userRepository.find({ where: { role }, select: ['id', 'fullName', 'email', 'phone', 'role', 'gender', 'address', 'avatar', 'isActive', 'createdAt', 'updatedAt'] });
         return user;
     }
+    async findNumber(pageOption) {
+        const sortOptions = {
+            updatedAt: 'DESC',
+        };
+        const limit = pageOption?.show;
+        const skip = (pageOption?.page - 1) * pageOption?.show;
+        try {
+            const searchQuery = pageOption?.search?.trim();
+            const [users, totalCount] = await Promise.all([
+                this.userRepository.find({
+                    skip,
+                    take: limit,
+                    order: sortOptions,
+                    where: searchQuery
+                        ? {
+                            fullName: (0, typeorm_2.ILike)(`%${searchQuery}%`),
+                            email: (0, typeorm_2.ILike)(`%${searchQuery}%`),
+                        }
+                        : undefined,
+                    select: ['id', 'fullName', 'email', 'phone', 'role', 'gender', 'address', 'avatar', 'isActive', 'createdAt', 'updatedAt']
+                }),
+                this.userRepository.count(),
+            ]);
+            if (!users || users.length === 0) {
+                throw new common_1.NotFoundException('No users found matching the search criteria.');
+            }
+            return {
+                data: users,
+                count: totalCount,
+            };
+        }
+        catch (error) {
+            console.error('Error:', error);
+            throw new common_1.InternalServerErrorException('Error finding users.', error.message);
+        }
+    }
     async findById(id) {
         try {
             return this.userRepository.findOne({ where: { id }, select: ['id', 'fullName', 'email', 'phone', 'role', 'gender', 'address', 'avatar', 'isActive', 'createdAt', 'updatedAt'] });

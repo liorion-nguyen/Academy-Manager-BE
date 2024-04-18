@@ -22,6 +22,10 @@ export class NotificationService {
         return this.notificationRepository.findOne({ where: { id } });
     }
 
+    async findUser(userId: string): Promise<Notification[] | undefined> {
+        return this.notificationRepository.find({ where: { userId } });
+    }
+
     async create(notification: Notification) {
         try {
             await this.userRepository.findOne({ where: { id: notification.userId } })

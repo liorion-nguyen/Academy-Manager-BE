@@ -43,6 +43,12 @@ __decorate([
     (0, typeorm_1.JoinColumn)({ name: 'userId' }),
     __metadata("design:type", user_entity_1.User)
 ], Notification.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    (0, class_validator_1.IsDate)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Date)
+], Notification.prototype, "createdAt", void 0);
 exports.Notification = Notification = __decorate([
     (0, typeorm_1.Entity)()
 ], Notification);

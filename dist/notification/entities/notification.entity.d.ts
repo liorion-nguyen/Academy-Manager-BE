@@ -5,4 +5,5 @@ export declare class Notification {
     content: string;
     userId: string;
     user: User;
+    createdAt: Date;
 }

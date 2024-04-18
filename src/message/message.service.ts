@@ -5,6 +5,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Message } from "./entities/message.entities";
 import { ReturnMessage } from "./entities/returnMess.entities";
 import { v4 as uuidv4 } from 'uuid';
+import { BoxChat } from "src/boxChat/entities/boxChat.entities";
 
 @Injectable()
 export class MessageService {
@@ -12,25 +13,31 @@ export class MessageService {
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
         @InjectRepository(Message)
-        private readonly messageRepository: Repository<Message>
+        private readonly messageRepository: Repository<Message>,
+        @InjectRepository(BoxChat)
+        private readonly boxChatRepository: Repository<BoxChat>
     ) { }
 
     async getChat(boxId: string) {
-        return this.messageRepository.find({ where: { boxId }, select: ['id', 'mode', 'content', 'createdAt', 'updatedAt'] });
+        return this.messageRepository.find({ where: { boxId }, select: ['id', 'reply', 'emoji', 'userId', 'content', 'createdAt', 'updatedAt'] });
     }
 
-    async getBoxChat(userId: string): Promise<string[]> {
-        const query = `
-        SELECT DISTINCT "boxId" FROM "message" WHERE "userId" = $1
-    `;
-        const result = await this.messageRepository.query(query, [userId]);
-
-        const uniqueBoxIds = result.map((row: any) => row.boxId);
-
-        return uniqueBoxIds;
+    async createMessage(content: any): Promise<any> {
+        try {
+            await this.userRepository.findOne({ where: { id: content.id } })
+            const boxId = content.boxId;
+            return this.messageRepository.save({
+                userId: content.id,
+                boxId: boxId,
+                reply: content.reply || null,
+                content: content.content
+            });
+        } catch (error) {
+            throw new BadRequestException(`User with id ${content.id} not found`);
+        }
     }
 
-    async sendChat(content: ReturnMessage): Promise<any> {
+    async sendChatAi(content: any): Promise<any> {
         const dataFetch = {
             contents: content.content
         }
@@ -62,26 +69,46 @@ export class MessageService {
             message = message.replace(/gemini/gi, "LiorionAi");
             message = message.replace(/google/gi, "Liorion Nguyen");
             try {
-                await this.userRepository.findOne({ where: { id: content.id } })
-                const boxId = content.boxId || uuidv4();
-                this.messageRepository.save({
+                let boxId = content.boxId;
+                let boxChat;
+                if (!boxId) {
+                    const id = content.id;
+                    const user = await this.userRepository.findOne({ where: { id }, select: ['fullName'] });
+                    boxChat = await this.boxChatRepository.save({
+                        name: "ChatBox Ai",
+                        emotional: "👍",
+                        theme: "radial-gradient(circle at center 75%, rgb(85, 208, 255) 0%, rgb(117, 151, 215) 33%, rgb(255, 159, 179) 66%, rgb(255, 159, 179) 99%)",
+                        contactUser: [{
+                            userId: content.id,
+                            nickName: user.fullName,
+                            role: "Creator"
+                        }, {
+                            userId: 'd6435b92-f9fe-480e-a8b6-b8cea08900ab',
+                            nickName: "ChatBox Ai",
+                            role: "ChatBox"
+                        }]
+                    })
+                    boxId = boxChat.id;
+                }
+                
+                await this.messageRepository.save({
                     userId: content.id,
                     boxId: boxId,
-                    mode: false,
+                    reply: content.reply || null,
                     content: content.content[content.content.length - 1].parts[0].text
                 });
-                
+
                 const saveMessage = await this.messageRepository.save({
-                    userId: content.id,
+                    userId: 'd6435b92-f9fe-480e-a8b6-b8cea08900ab',
                     boxId: boxId,
-                    mode: true,
+                    reply: content.reply || null,
                     content: message
                 });
                 return {
-                    content: message,
+                    boxId: boxId,
                     id: saveMessage.id,
+                    content: message,
                     createAt: saveMessage.createdAt,
-                    creator: false,
                     emoji: []
                 };
             } catch (error) {
@@ -95,7 +122,9 @@ export class MessageService {
 
     async deleteBox(boxId: string): Promise<any> {
         try {
+            const id = boxId;
             await this.messageRepository.delete({ boxId: boxId });
+            await this.boxChatRepository.delete({ id });
             return `Delete box chat ID: ${boxId} success`;
         } catch (error) {
             console.error('Lỗi khi xoá boxId:', error);
