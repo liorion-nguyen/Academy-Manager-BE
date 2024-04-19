@@ -15,8 +15,6 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
  
   @SubscribeMessage('chat')
   handleChat(client: any, payload: any): void {
-    console.log("hello");
-    
     // Xử lý tin nhắn chat và gửi lại cho tất cả các client khác
     this.server.emit('chat', payload);
   }
