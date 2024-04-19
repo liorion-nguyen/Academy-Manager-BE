@@ -18,7 +18,6 @@ let SocketGateway = class SocketGateway {
     handleDisconnect(client) {
     }
     handleChat(client, payload) {
-        console.log("hello");
         this.server.emit('chat', payload);
     }
 };

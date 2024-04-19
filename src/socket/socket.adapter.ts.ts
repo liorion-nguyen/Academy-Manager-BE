@@ -9,7 +9,14 @@ export class SocketAdapter extends IoAdapter {
       server?: any;
     },
   ) {
-    const server = super.createIOServer(port, { ...options, cors: true });
+    const corsOptions = {
+      origin: ['https://academy-manager.vercel.app', 'http://localhost:3000', 'https://academy-manager-be.vercel.app'],
+      methods: ['GET', 'POST'],
+      credentials: true,
+      allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+    };
+
+    const server = super.createIOServer(port, { ...options, cors: corsOptions });
     return server;
   }
 }
