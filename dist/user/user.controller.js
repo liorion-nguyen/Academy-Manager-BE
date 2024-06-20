@@ -30,6 +30,9 @@ let UserController = class UserController {
     async findNumber(pageOption) {
         return this.userService.findNumber(pageOption);
     }
+    async findSearch(pageOption) {
+        return this.userService.findSearch(pageOption);
+    }
     async findById(id) {
         return this.userService.findById(id);
     }
@@ -75,6 +78,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "findNumber", null);
+__decorate([
+    (0, common_1.Get)("/search"),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "findSearch", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),

@@ -24,7 +24,7 @@ __decorate([
     (0, typeorm_1.Column)(),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.Length)(10, 100),
+    (0, class_validator_1.Length)(5, 30),
     (0, class_validator_1.Matches)(/^(?:[\p{L}\s]+(?:\s+[\p{L}\s]+){1,})?$/u, { message: 'Fullname must only contain Vietnamese letters and at least 1 spaces between words.' }),
     __metadata("design:type", String)
 ], User.prototype, "fullName", void 0);
@@ -32,12 +32,12 @@ __decorate([
     (0, typeorm_1.Column)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsEmail)(),
-    (0, class_validator_1.Length)(10, 100),
+    (0, class_validator_1.Length)(8, 30),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    (0, class_validator_1.Length)(10, 11),
+    (0, class_validator_1.Length)(8, 12),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.Matches)(/^\d+$/, { message: 'Phone must only contain digits.' }),
     __metadata("design:type", String)
@@ -48,7 +48,6 @@ __decorate([
         enum: user_enum_1.Role,
         default: user_enum_1.Role.Student
     }),
-    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], User.prototype, "role", void 0);
 __decorate([

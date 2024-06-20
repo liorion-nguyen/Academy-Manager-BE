@@ -6,6 +6,8 @@ import * as bcrypt from 'bcrypt';
 import { Role } from './enum/user.enum';
 import { SearchUserDto } from './dto/search.dto';
 import { FirebaseService } from 'src/firebase/firebase.service';
+import * as nodemailer from 'nodemailer';
+
 @Injectable()
 export class UserService {
   constructor(
@@ -51,10 +53,69 @@ export class UserService {
             : undefined,
           select: ['id', 'fullName', 'email', 'phone', 'role', 'gender', 'address', 'avatar', 'isActive', 'createdAt', 'updatedAt']
         }),
-        this.userRepository.count(),
+        this.userRepository.count({
+          where: searchQuery
+            ? [
+              { fullName: ILike(`%${searchQuery}%`) },
+              { email: ILike(`%${searchQuery}%`) }
+            ]
+            : undefined
+        }),
       ]);
       if (!users || users.length === 0) {
         throw new NotFoundException('No users found matching the search criteria.');
+      }
+      return {
+        data: users,
+        count: totalCount,
+      };
+    } catch (error) {
+      console.error('Error:', error);
+      throw new InternalServerErrorException('Error finding users.', error.message);
+    }
+  }
+
+  async findSearch(pageOption: {
+    page?: number;
+    show?: number;
+    search?: string;
+  }): Promise<{ data: User[]; count: number }> {
+    const sortOptions: FindOptionsOrder<User> = {
+      updatedAt: 'DESC',
+    };
+    const limit = pageOption?.show;
+    const skip = (pageOption?.page - 1) * pageOption?.show;
+
+    try {
+      const searchQuery = pageOption?.search?.trim();
+
+      const [users, totalCount] = await Promise.all([
+        this.userRepository.find({
+          skip,
+          take: limit,
+          order: sortOptions,
+          where: searchQuery
+            ? {
+              fullName: ILike(`%${searchQuery}%`),
+              email: ILike(`%${searchQuery}%`),
+            }
+            : undefined,
+          select: ['id', 'fullName', 'avatar']
+        }),
+        this.userRepository.count({
+          where: searchQuery
+            ? [
+              { fullName: ILike(`%${searchQuery}%`) },
+              { email: ILike(`%${searchQuery}%`) }
+            ]
+            : undefined
+        }),
+      ]);
+      if (!users || users.length === 0) {
+        return {
+          data: [],
+          count: 0
+        }
       }
       return {
         data: users,
@@ -81,7 +142,7 @@ export class UserService {
   }
 
   async createUser(user: User, file: Express.Multer.File) {
-    let existingUser = await this.userRepository.findOne({ where: { email: user.email } });
+    let existingUser = await this.userRepository.findOne({ where: { email: user.email, phone: user.phone } });
 
     if (existingUser) {
       throw new BadRequestException('Account already exists');

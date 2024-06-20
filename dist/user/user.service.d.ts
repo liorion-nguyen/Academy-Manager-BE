@@ -18,6 +18,14 @@ export declare class UserService {
         data: User[];
         count: number;
     }>;
+    findSearch(pageOption: {
+        page?: number;
+        show?: number;
+        search?: string;
+    }): Promise<{
+        data: User[];
+        count: number;
+    }>;
     findById(id: string): Promise<User | undefined>;
     findByAccess(accessToken: string): Promise<User | undefined>;
     findByemail(email: string): Promise<User | undefined>;

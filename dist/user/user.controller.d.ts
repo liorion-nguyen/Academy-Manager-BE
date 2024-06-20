@@ -16,6 +16,14 @@ export declare class UserController {
         data: User[];
         count: number;
     }>;
+    findSearch(pageOption: {
+        page?: number;
+        show?: number;
+        search?: string;
+    }): Promise<{
+        data: User[];
+        count: number;
+    }>;
     findById(id: string): Promise<User>;
     create(user: User, avatar: Express.Multer.File): Promise<User>;
     search(data: SearchUserDto): Promise<User[]>;

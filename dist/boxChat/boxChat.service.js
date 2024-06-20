@@ -48,7 +48,7 @@ let BoxChatService = class BoxChatService {
             for (const boxChat of data) {
                 const contactUserIds = boxChat.contactUser.map(user => user.userId);
                 if (contactUserIds.length === 2 && contactUserIds.includes(id1) && contactUserIds.includes(id2)) {
-                    return boxChat.id;
+                    return boxChat;
                 }
             }
             return this.createBoxChat({

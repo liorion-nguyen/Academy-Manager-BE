@@ -15,11 +15,7 @@ export declare class AuthService {
     getUserFromAccessToken(accessToken: string): Promise<false | {
         id: string;
         fullName: string;
-        email: string;
-        phone: string;
         role: import("src/user/enum/user.enum").Role;
-        gender: import("src/user/enum/user.enum").Gender;
-        address: string;
         avatar: string;
         isActive: boolean;
     }>;

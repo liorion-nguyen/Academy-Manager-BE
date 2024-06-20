@@ -37,6 +37,15 @@ export class UserController {
     return this.userService.findNumber(pageOption);
   }
 
+  @Get("/search")
+  async findSearch( @Query() pageOption: {
+    page?: number,
+    show?: number,
+    search?: string,
+  }): Promise<{ data: User[], count: number }> {
+    return this.userService.findSearch(pageOption);
+  }
+
   @Get(':id')
   async findById(@Param('id') id: string): Promise<User> {
     return this.userService.findById(id);

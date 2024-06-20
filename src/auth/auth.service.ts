@@ -67,13 +67,13 @@ export class AuthService {
       return {
         id: user.id,
         fullName: user.fullName,
-        email: user.email,
-        phone: user.phone,
         role: user.role,
-        gender: user.gender,
-        address: user.address,
         avatar: user.avatar,
-        isActive: true
+        isActive: true,
+        // email: user.email,
+        // gender: user.gender,
+        // address: user.address,
+        // phone: user.phone,
       };
     } catch (error) {
       return false;

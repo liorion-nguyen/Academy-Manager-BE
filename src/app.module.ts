@@ -16,7 +16,8 @@ import { MessageModule } from './message/message.module';
 import { Message } from './message/entities/message.entities';
 import { BoxChat } from './boxChat/entities/boxChat.entities';
 import { BoxChatModule } from './boxChat/boxChat.module';
-import { SocketGateway } from './socket/socket.gateway';
+import { ConfirmModule } from './confirm/confirm.module';
+import { Confirm } from './confirm/entities/confirm.etities';
 
 dotenv.config();
 
@@ -26,7 +27,7 @@ dotenv.config();
       type: 'postgres',
       url: process.env.DATABASE_URL,
       synchronize: true,
-      entities: [User, Notification, Class, Message, BoxChat],
+      entities: [User, Notification, Class, Message, BoxChat, Confirm],
     }),
     UserModule,
     ClassModule,
@@ -35,13 +36,14 @@ dotenv.config();
     BoxChatModule,
     FirebaseModule,
     NotificationModule,
+    ConfirmModule,
     JwtModule.register({
       secret: 'liorion',
       signOptions: { expiresIn: '60s' },
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, SocketGateway],
+  providers: [AppService],
 })
 
 export class AppModule {
