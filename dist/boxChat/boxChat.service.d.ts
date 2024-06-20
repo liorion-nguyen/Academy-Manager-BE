@@ -7,6 +7,6 @@ export declare class BoxChatService {
     constructor(userRepository: Repository<User>, boxChatRepository: Repository<BoxChat>);
     getBoxChat(userId: string): Promise<any[]>;
     getInformationUser(id: string): Promise<User>;
-    getBoxIdWithUser(id1: string, id2: string): Promise<string | Error>;
+    getBoxIdWithUser(id1: string, id2: string): Promise<any>;
     createBoxChat(data: any): Promise<any>;
 }

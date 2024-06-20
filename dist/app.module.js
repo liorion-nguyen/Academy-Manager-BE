@@ -25,7 +25,8 @@ const message_module_1 = require("./message/message.module");
 const message_entities_1 = require("./message/entities/message.entities");
 const boxChat_entities_1 = require("./boxChat/entities/boxChat.entities");
 const boxChat_module_1 = require("./boxChat/boxChat.module");
-const socket_gateway_1 = require("./socket/socket.gateway");
+const confirm_module_1 = require("./confirm/confirm.module");
+const confirm_etities_1 = require("./confirm/entities/confirm.etities");
 dotenv.config();
 let AppModule = class AppModule {
 };
@@ -37,7 +38,7 @@ exports.AppModule = AppModule = __decorate([
                 type: 'postgres',
                 url: process.env.DATABASE_URL,
                 synchronize: true,
-                entities: [user_entity_1.User, notification_entity_1.Notification, class_entities_1.Class, message_entities_1.Message, boxChat_entities_1.BoxChat],
+                entities: [user_entity_1.User, notification_entity_1.Notification, class_entities_1.Class, message_entities_1.Message, boxChat_entities_1.BoxChat, confirm_etities_1.Confirm],
             }),
             user_module_1.UserModule,
             class_module_1.ClassModule,
@@ -46,13 +47,14 @@ exports.AppModule = AppModule = __decorate([
             boxChat_module_1.BoxChatModule,
             firebase_module_1.FirebaseModule,
             notification_module_1.NotificationModule,
+            confirm_module_1.ConfirmModule,
             jwt_1.JwtModule.register({
                 secret: 'liorion',
                 signOptions: { expiresIn: '60s' },
             }),
         ],
         controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService, socket_gateway_1.SocketGateway],
+        providers: [app_service_1.AppService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

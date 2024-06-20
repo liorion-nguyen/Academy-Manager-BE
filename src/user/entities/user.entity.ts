@@ -10,18 +10,18 @@ export class User {
     @Column()
     @IsString()
     @IsNotEmpty()
-    @Length(10, 100)
+    @Length(5, 30)
     @Matches(/^(?:[\p{L}\s]+(?:\s+[\p{L}\s]+){1,})?$/u, { message: 'Fullname must only contain Vietnamese letters and at least 1 spaces between words.' })
     fullName: string;
 
     @Column()
     @IsNotEmpty()
     @IsEmail()
-    @Length(10, 100)
+    @Length(8, 30)
     email: string;
 
     @Column()
-    @Length(10, 11)
+    @Length(8, 12)
     @IsString()
     @Matches(/^\d+$/, { message: 'Phone must only contain digits.' })
     phone: string;
@@ -31,7 +31,6 @@ export class User {
         enum: Role,
         default: Role.Student
     })
-    @IsNotEmpty()
     role: Role;
 
     @Column({

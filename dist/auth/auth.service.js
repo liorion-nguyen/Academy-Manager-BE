@@ -70,13 +70,9 @@ let AuthService = class AuthService {
             return {
                 id: user.id,
                 fullName: user.fullName,
-                email: user.email,
-                phone: user.phone,
                 role: user.role,
-                gender: user.gender,
-                address: user.address,
                 avatar: user.avatar,
-                isActive: true
+                isActive: true,
             };
         }
         catch (error) {
