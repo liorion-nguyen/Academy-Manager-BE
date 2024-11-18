@@ -1,90 +1,30 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+![Logo](./public/Images/screens/Logo.svg)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Dự án Academy Manager
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Dự án "Academy Manager" là một hệ thống quản lý trường học, cung cấp các chức năng quản lý lớp học, học sinh, giảng viên, cùng với tính năng chatbox và tin nhắn.
 
-## Description
+## Mô tả dự án
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-## Using node_modules
-```bash
-node 18
-```
+Hệ thống này được thiết kế để cung cấp một nền tảng quản lý toàn diện, cho phép người dùng quản lý quá trình học tập và giảng dạy một cách hiệu quả. Academy Manager không chỉ giúp người dùng theo dõi tiến độ học tập mà còn cung cấp các công cụ giao tiếp giữa học sinh và giảng viên.
 
+Academy Manager hoạt động tốt trên cả máy tính để bàn và thiết bị di động, mang đến trải nghiệm quản lý linh hoạt cho người dùng.
 
-## Installation
+**Các tính năng chính:**
+- Quản lý lớp học và học sinh.
+- Quản lý giảng viên và khóa học.
+- Tính năng chatbox và gửi tin nhắn giữa học sinh và giảng viên.
 
-```bash
-$ npm install
-```
+## Công nghệ sử dụng:
+* [Next.js](https://nextjs.org/): Framework React cho việc phát triển ứng dụng web.
+* [NestJS](https://nestjs.com/): Framework cho Node.js, giúp xây dựng ứng dụng server-side.
+* [Redux](https://redux.js.org/): Thư viện quản lý trạng thái cho ứng dụng React.
+* [PostgreSQL](https://www.postgresql.org/): Hệ quản trị cơ sở dữ liệu mã nguồn mở, cho phép lưu trữ và quản lý dữ liệu một cách hiệu quả.
+* [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket): Giao thức cho phép giao tiếp hai chiều giữa client và server.
 
-## Running the app
+## [Figma](https://www.figma.com/design/uBO1X7QeIlv9Bj3EmRFlmq/School-Management-System-(Community))
 
-```bash
-# development
-$ npm run start
+## [Link Website](https://academy-manager.vercel.app/)
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-Open [http://localhost:8000](http://localhost:8000) with your browser to see the result.
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
-
-# For work 
-```bash
-git checkout main -> chuyển về nhánh main
-git pull origin main -> kéo những thay đổi mới nhất về
-git checkout -b (Tên nhánh)  -> Tạo nhánh mới
-{handle works} -> Xử lí công việc 
-git add . -> Thêm tất cả các file đã thay đổi để đẩy lên nhánh
-git commit -m "(content)" -> Ghi chú mình đã xử lí cái gì
-git push origin (Tên nhánh) -> đẩy lên nhánh
-```
+# Demo
+[![Xem video](./public/Images/screens/previews.png)(./)](public/Images/screens/demo.mp4)
